@@ -22,10 +22,10 @@ public class Robot {
     private ElapsedTime timer;
 
     //DC Motors
-    private DcMotorEx frontLeftDriveMotor;
-    private DcMotorEx frontRightDriveMotor;
-    private DcMotorEx rearRightDriveMotor;
-    private DcMotorEx rearLeftDriveMotor;
+    public DcMotorEx frontLeftDriveMotor;
+    public DcMotorEx frontRightDriveMotor;
+    public DcMotorEx rearRightDriveMotor;
+    public DcMotorEx rearLeftDriveMotor;
 
 
     //Sensors
@@ -38,6 +38,9 @@ public class Robot {
     public Robot(OpMode opMode, ElapsedTime timer){
         hardwareMap = opMode.hardwareMap;
         this.timer = timer;
+        init();
+    }
+    public Robot (){
         init();
     }
     public void init(){
