@@ -46,10 +46,10 @@ public class OpModeMecanum extends LinearOpMode {
             telemetry.addData("Right Stick X", rightStickX);
 
             telemetry.addData("", "");
-            telemetry.addData("Left Rear Power", lrDrive.getPower());
-            telemetry.addData("Left Front Power", lfDrive.getPower());
-            telemetry.addData("Right Rear Power", rrDrive.getPower());
-            telemetry.addData("Right Front Power", rfDrive.getPower());
+            telemetry.addData("Left Rear Power", robot.rearLeftDriveMotor.getPower());
+            telemetry.addData("Left Front Power", robot.frontLeftDriveMotor.getPower());
+            telemetry.addData("Right Rear Power", robot.rearRightDriveMotor.getPower());
+            telemetry.addData("Right Front Power", robot.frontRightDriveMotor.getPower());
             telemetry.update();
         }
     }
