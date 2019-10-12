@@ -17,10 +17,6 @@ public class OpModeMecanum extends LinearOpMode {
     private DcMotor lfDrive;
     private DcMotor rrDrive;
     private DcMotor rfDrive;
-    private DcMotor suction;
-    private DcMotor lift;
-    private Servo leftClamp; // port 1 on the servo controller
-    private Servo rightClamp; // port 2 on the servo controller
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -44,33 +40,11 @@ public class OpModeMecanum extends LinearOpMode {
             rrDrive.setPower(motorPowers[2]);
             rfDrive.setPower(motorPowers[3]);
 
-            if(aButton)
-                suction.setPower(1);
-            else
-                suction.setPower(0);
-
-            if(bButton)
-                lift.setPower(0.25);
-            else
-                lift.setPower(0);
-
-            if(dPadUp)
-                leftClamp.setPosition(leftClamp.getPosition()+0.01);
-            else if(dPadDown)
-                leftClamp.setPosition(leftClamp.getPosition()-0.01);
-
-            if(dPadRight)
-                rightClamp.setPosition(rightClamp.getPosition()+0.01);
-            else if(dPadLeft)
-                rightClamp.setPosition(rightClamp.getPosition()-0.01);
-
             telemetry.addData("Left Stick X", leftStickX);
             telemetry.addData("Left Stick Y", -leftStickY);
             telemetry.addData("Right Stick X", rightStickX);
 
             telemetry.addData("", "");
-            telemetry.addData("Left Clamp postion", leftClamp.getPosition());
-            telemetry.addData("Right Clamp position", rightClamp.getPosition());
             telemetry.addData("Left Rear Power", lrDrive.getPower());
             telemetry.addData("Left Front Power", lfDrive.getPower());
             telemetry.addData("Right Rear Power", rrDrive.getPower());
@@ -85,18 +59,12 @@ public class OpModeMecanum extends LinearOpMode {
         lfDrive = hardwareMap.dcMotor.get("lfDrive");
         rrDrive = hardwareMap.dcMotor.get("rrDrive");
         rfDrive = hardwareMap.dcMotor.get("rfDrive");
-        suction = hardwareMap.dcMotor.get("suction");
-        lift = hardwareMap.dcMotor.get("lift");
-        leftClamp = hardwareMap.servo.get("leftClamp");
-        rightClamp = hardwareMap.servo.get("rightClamp");
 
         //Set directions
         lrDrive.setDirection(DcMotor.Direction.REVERSE);
         lfDrive.setDirection(DcMotor.Direction.REVERSE);
         rrDrive.setDirection(DcMotor.Direction.FORWARD);
         rfDrive.setDirection(DcMotor.Direction.FORWARD);
-        suction.setDirection(DcMotor.Direction.FORWARD);
-        lift.setDirection(DcMotor.Direction.FORWARD);
     }
 
     private double[] calcMotorPowers(double leftStickX, double leftStickY, double rightStickX) {
