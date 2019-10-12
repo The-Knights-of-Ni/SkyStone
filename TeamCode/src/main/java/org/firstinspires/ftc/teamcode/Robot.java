@@ -26,18 +26,6 @@ public class Robot {
     private DcMotorEx frontRightDriveMotor;
     private DcMotorEx rearRightDriveMotor;
     private DcMotorEx rearLeftDriveMotor;
-    private DcMotorEx leftGlyftMotor;
-    private DcMotorEx rightGlyftMotor;
-    private DcMotorEx relicMotor;
-
-    //Servos
-//    private Servo jewelServo;
-//    private Servo leftSqueezerServo;
-//    private Servo rightSqueezerServo;
-//    private Servo relicWristServo;
-//    private Servo relicClawServo;
-    private Servo intakeBoxTilt;
-    private Servo intakeMech;
 
 
     //Sensors

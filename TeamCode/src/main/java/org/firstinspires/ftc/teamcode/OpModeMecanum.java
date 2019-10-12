@@ -17,6 +17,7 @@ public class OpModeMecanum extends LinearOpMode {
     private DcMotor lfDrive;
     private DcMotor rrDrive;
     private DcMotor rfDrive;
+    private Robot robot;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -35,10 +36,10 @@ public class OpModeMecanum extends LinearOpMode {
             boolean dPadRight = gamepad1.dpad_right;
 
             double[] motorPowers = calcMotorPowers(leftStickX, leftStickY, rightStickX);
-            lrDrive.setPower(motorPowers[0]);
-            lfDrive.setPower(motorPowers[1]);
-            rrDrive.setPower(motorPowers[2]);
-            rfDrive.setPower(motorPowers[3]);
+            robot.rearLeftDriveMotor.setPower(motorPowers[0]);
+            robot.frontLeftDriveMotor.setPower(motorPowers[1]);
+            robot.rearRightDriveMotor.setPower(motorPowers[2]);
+            robot.frontRightDriveMotor.setPower(motorPowers[3]);
 
             telemetry.addData("Left Stick X", leftStickX);
             telemetry.addData("Left Stick Y", -leftStickY);
@@ -55,16 +56,18 @@ public class OpModeMecanum extends LinearOpMode {
 
     private void initOpMode() {
         //Initialize DC motor objects
-        lrDrive = hardwareMap.dcMotor.get("lrDrive");
-        lfDrive = hardwareMap.dcMotor.get("lfDrive");
-        rrDrive = hardwareMap.dcMotor.get("rrDrive");
-        rfDrive = hardwareMap.dcMotor.get("rfDrive");
+        robot = new Robot();
+//        robot.init();
+//        lrDrive = hardwareMap.dcMotor.get("lrDrive");
+//        lfDrive = hardwareMap.dcMotor.get("lfDrive");
+//        rrDrive = hardwareMap.dcMotor.get("rrDrive");
+//        rfDrive = hardwareMap.dcMotor.get("rfDrive");
 
         //Set directions
-        lrDrive.setDirection(DcMotor.Direction.REVERSE);
-        lfDrive.setDirection(DcMotor.Direction.REVERSE);
-        rrDrive.setDirection(DcMotor.Direction.FORWARD);
-        rfDrive.setDirection(DcMotor.Direction.FORWARD);
+//        lrDrive.setDirection(DcMotor.Direction.REVERSE);
+//        lfDrive.setDirection(DcMotor.Direction.REVERSE);
+//        rrDrive.setDirection(DcMotor.Direction.FORWARD);
+//        rfDrive.setDirection(DcMotor.Direction.FORWARD);
     }
 
     private double[] calcMotorPowers(double leftStickX, double leftStickY, double rightStickX) {
