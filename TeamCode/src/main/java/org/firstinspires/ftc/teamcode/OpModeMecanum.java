@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 /**
  * Created by tarunsingh on 9/24/17.
@@ -13,10 +14,6 @@ import com.qualcomm.robotcore.hardware.Servo;
 @TeleOp(name = "Mecanum")
 public class OpModeMecanum extends LinearOpMode {
     //Declare DC motor objects
-    private DcMotor lrDrive;
-    private DcMotor lfDrive;
-    private DcMotor rrDrive;
-    private DcMotor rfDrive;
     private Robot robot;
 
     @Override
@@ -36,7 +33,7 @@ public class OpModeMecanum extends LinearOpMode {
             boolean dPadRight = gamepad1.dpad_right;
 
             double[] motorPowers = calcMotorPowers(leftStickX, leftStickY, rightStickX);
-            robot.rearLeftDriveMotor.setPower(motorPowers[0]);
+            robot.rearLeftDriveMotor.setPower(-motorPowers[0]);
             robot.frontLeftDriveMotor.setPower(motorPowers[1]);
             robot.rearRightDriveMotor.setPower(motorPowers[2]);
             robot.frontRightDriveMotor.setPower(motorPowers[3]);
@@ -53,10 +50,10 @@ public class OpModeMecanum extends LinearOpMode {
             telemetry.update();
         }
     }
-
     private void initOpMode() {
         //Initialize DC motor objects
-        robot = new Robot();
+        ElapsedTime timer = new ElapsedTime();
+        robot = new Robot(this, timer);
 //        robot.init();
 //        lrDrive = hardwareMap.dcMotor.get("lrDrive");
 //        lfDrive = hardwareMap.dcMotor.get("lfDrive");
