@@ -23,7 +23,7 @@ public class OpModeMecanum extends LinearOpMode {
         while(opModeIsActive()) {
             //Get gamepad inputs
             double leftStickX = gamepad1.left_stick_x;
-            double leftStickY = gamepad1.left_stick_y;
+            double leftStickY = -gamepad1.left_stick_y;
             double rightStickX = gamepad1.right_stick_x;
             boolean aButton = gamepad1.a;
             boolean bButton = gamepad1.b;
