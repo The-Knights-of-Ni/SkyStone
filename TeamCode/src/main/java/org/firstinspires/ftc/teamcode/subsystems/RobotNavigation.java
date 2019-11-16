@@ -82,7 +82,7 @@ import java.util.List;
 
 @TeleOp(name="Concept: Vuforia Navigation", group ="Concept")
 @Disabled
-public class ConceptVuforiaNavigation extends LinearOpMode {
+public class RobotNavigation extends LinearOpMode {
 
     public static final String TAG = "Vuforia Navigation Sample";
 
@@ -229,11 +229,11 @@ public class ConceptVuforiaNavigation extends LinearOpMode {
         redTarget.setLocation(redTargetLocationOnField);
         RobotLog.ii(TAG, "Red Target=%s", format(redTargetLocationOnField));
 
-       /*
-        * To place the Stones Target on the Blue Audience wall:
-        * - First we rotate it 90 around the field's X axis to flip it upright
-        * - Finally, we translate it along the Y axis towards the blue audience wall.
-        */
+        /*
+         * To place the Stones Target on the Blue Audience wall:
+         * - First we rotate it 90 around the field's X axis to flip it upright
+         * - Finally, we translate it along the Y axis towards the blue audience wall.
+         */
         OpenGLMatrix blueTargetLocationOnField = OpenGLMatrix
                 /* Then we translate the target off to the Blue Audience wall.
                 Our translation here is a positive translation in Y.*/
