@@ -26,7 +26,15 @@ public class Robot {
     public DcMotorEx frontRightDriveMotor;
     public DcMotorEx rearRightDriveMotor;
     public DcMotorEx rearLeftDriveMotor;
+    public DcMotorEx xRailWinch;
+    public DcMotorEx armTilt;
 
+    //Servos
+    public Servo mainArm;
+    public Servo mainRotation;
+    public Servo mainClaw;
+    public Servo csClaw; //capstone claw
+    public Servo csArm; //capstone arm
 
     //Sensors
     private BNO055IMU imu;
@@ -58,12 +66,18 @@ public class Robot {
         rearLeftDriveMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rearRightDriveMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
+        xRailWinch = (DcMotorEx) hardwareMap.dcMotor.get("winch");
+        armTilt = (DcMotorEx) hardwareMap.dcMotor.get("tilt");
+
+        xRailWinch.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        armTilt.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
         //Servos
-//        jewelServo = hardwareMap.servo.get("jewel_servo");
-//        leftSqueezerServo = hardwareMap.servo.get("left_grabber");
-//        rightSqueezerServo = hardwareMap.servo.get("right_grabber");
-//        relicWristServo = hardwareMap.servo.get("relic_wrist");
-//        relicClawServo = hardwareMap.servo.get("relic_claw");
+        mainArm = hardwareMap.servo.get("mA");
+        mainRotation = hardwareMap.servo.get("mR");
+        mainClaw = hardwareMap.servo.get("mC");
+        csClaw = hardwareMap.servo.get("csC"); //capstone claw
+        csArm = hardwareMap.servo.get("csA"); //capstone arm
 
         //Sensors
         imu = hardwareMap.get(BNO055IMU.class, "imu");

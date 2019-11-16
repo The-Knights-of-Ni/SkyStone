@@ -133,7 +133,6 @@ public class ConceptTensorFlowObjectDetection extends LinearOpMode {
         }
 
         if (tfod != null) {
-            tfod.shutdown();
         }
     }
 
