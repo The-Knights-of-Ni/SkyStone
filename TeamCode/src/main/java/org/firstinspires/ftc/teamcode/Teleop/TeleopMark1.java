@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.Teleop;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -7,12 +7,14 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.teamcode.Robot;
+
 /**
  * Created by tarunsingh on 9/24/17.
  */
 
-@TeleOp(name = "Mecanum")
-public class OpModeMecanum extends LinearOpMode {
+@TeleOp(name = "TeleopMark1")
+public class TeleopMark1 extends LinearOpMode {
     //Declare DC motor objects
     private Robot robot;
 
@@ -31,6 +33,16 @@ public class OpModeMecanum extends LinearOpMode {
             boolean dPadDown = gamepad1.dpad_down;
             boolean dPadLeft = gamepad1.dpad_left;
             boolean dPadRight = gamepad1.dpad_right;
+
+            double leftStickX2 = gamepad2.left_stick_x;
+            double leftStickY2 = -gamepad2.left_stick_y;
+            double rightStickX2 = gamepad2.right_stick_x;
+            boolean aButton2 = gamepad2.a;
+            boolean bButton2 = gamepad2.b;
+            boolean dPadUp2 = gamepad2.dpad_up;
+            boolean dPadDown2 = gamepad2.dpad_down;
+            boolean dPadLeft2 = gamepad2.dpad_left;
+            boolean dPadRight2 = gamepad2.dpad_right;
 
             double[] motorPowers = calcMotorPowers(leftStickX, leftStickY, rightStickX);
             robot.rearLeftDriveMotor.setPower(-motorPowers[0]);
