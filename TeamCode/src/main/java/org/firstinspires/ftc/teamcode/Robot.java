@@ -77,6 +77,7 @@ public class Robot {
         parameters.loggingTag          = "IMU";
         parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
 
+
         imu.initialize(parameters);
 
         //Subsystems
