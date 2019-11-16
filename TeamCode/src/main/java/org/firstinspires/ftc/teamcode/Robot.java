@@ -48,6 +48,7 @@ public class Robot {
         this.timer = timer;
         init();
     }
+
     public Robot (){
         init();
     }
