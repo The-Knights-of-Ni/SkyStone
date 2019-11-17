@@ -37,6 +37,7 @@ public class TeleopMark1 extends LinearOpMode {
             double leftStickX2 = gamepad2.left_stick_x;
             double leftStickY2 = -gamepad2.left_stick_y;
             double rightStickX2 = gamepad2.right_stick_x;
+            double rightStickY2 = gamepad2.right_stick_y;
             boolean aButton2 = gamepad2.a;
             boolean bButton2 = gamepad2.b;
             boolean dPadUp2 = gamepad2.dpad_up;
@@ -49,6 +50,11 @@ public class TeleopMark1 extends LinearOpMode {
             robot.frontLeftDriveMotor.setPower(motorPowers[1]);
             robot.rearRightDriveMotor.setPower(motorPowers[2]);
             robot.frontRightDriveMotor.setPower(motorPowers[3]);
+
+            robot.xRailWinch.setPower(Math.pow(leftStickY2, 3.0));
+            robot.armTilt.setPower(Math.pow(rightStickY2, 3.0));
+
+
 
             telemetry.addData("Left Stick X", leftStickX);
             telemetry.addData("Left Stick Y", -leftStickY);
