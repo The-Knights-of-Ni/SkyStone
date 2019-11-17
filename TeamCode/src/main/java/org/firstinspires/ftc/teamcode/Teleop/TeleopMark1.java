@@ -44,6 +44,10 @@ public class TeleopMark1 extends LinearOpMode {
             boolean dPadDown2 = gamepad2.dpad_down;
             boolean dPadLeft2 = gamepad2.dpad_left;
             boolean dPadRight2 = gamepad2.dpad_right;
+            boolean bumperLeft2 = gamepad2.left_bumper;
+            boolean bumperRight2 = gamepad2.right_bumper;
+
+
 
             double[] motorPowers = calcMotorPowers(leftStickX, leftStickY, rightStickX);
             robot.rearLeftDriveMotor.setPower(-motorPowers[0]);
@@ -51,8 +55,15 @@ public class TeleopMark1 extends LinearOpMode {
             robot.rearRightDriveMotor.setPower(motorPowers[2]);
             robot.frontRightDriveMotor.setPower(motorPowers[3]);
 
-            robot.xRailWinch.setPower(Math.pow(leftStickY2, 3.0));
-            robot.armTilt.setPower(Math.pow(rightStickY2, 3.0));
+            robot.xRailWinch.setPower(Math.pow(leftStickY2, 2.0));
+            robot.armTilt.setPower(Math.pow(rightStickY2, 2.0));
+
+            if (bumperLeft2) {
+                robot.xRailWinch.setPower(0);
+            }
+            if (bumperRight2) {
+                robot.armTilt.setPower(0);
+            }
 
 
 
