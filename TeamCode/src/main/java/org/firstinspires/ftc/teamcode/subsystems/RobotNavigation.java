@@ -28,6 +28,7 @@
  */
 package org.firstinspires.ftc.teamcode.subsystems;
 
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -82,7 +83,7 @@ import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocaliz
  */
 
 
-@TeleOp(name="SKYSTONE Vuforia Nav", group ="Concept")
+@Autonomous(name="SKYSTONE Vuforia Nav", group ="Concept")
 //@Disabled
  public class RobotNavigation extends LinearOpMode {
 
@@ -341,6 +342,7 @@ import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocaliz
                 }
             }
 
+            String positionString = "";
             // Provide feedback as to where the robot is located (if we know).
             if (targetVisible) {
                 // express position (translation) of robot in inches.
@@ -348,13 +350,23 @@ import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocaliz
                 telemetry.addData("Pos (in)", "{X, Y, Z} = %.1f, %.1f, %.1f",
                         translation.get(0) / mmPerInch, translation.get(1) / mmPerInch, translation.get(2) / mmPerInch);
 
+                double xPosition = translation.get(0);
+
+                if (xPosition < -2) {
+                    positionString = "Left";
+                } else {
+                    positionString = "Center";
+                }
+
                 // express the rotation of the robot in degrees.
                 Orientation rotation = Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, DEGREES);
                 telemetry.addData("Rot (deg)", "{Roll, Pitch, Heading} = %.0f, %.0f, %.0f", rotation.firstAngle, rotation.secondAngle, rotation.thirdAngle);
             }
             else {
+                positionString = "Right";
                 telemetry.addData("Visible Target", "none");
             }
+            telemetry.addData("Skystone Position", positionString);
             telemetry.update();
         }
 

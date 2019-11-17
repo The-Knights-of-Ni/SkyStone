@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.subsystems;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 
@@ -10,10 +11,12 @@ public class omniDirectionalDrive {
 
     //Sensors
     private BNO055IMU imu;
+    private HardwareMap hardwareMap;
+
 
     public omniDirectionalDrive(OpMode opMode, ElapsedTime timer){
         hardwareMap = opMode.hardwareMap;
-        this.timer = timer;
+//        this.timer = timer;
         init();
     }
     public omniDirectionalDrive (){
@@ -36,10 +39,10 @@ public class omniDirectionalDrive {
 
 
         imu.initialize(parameters);
-        position = imu.getPosition();
+//        position = imu.getPosition();
 
         //Subsystems
-        drive = new Drive(frontLeftDriveMotor, frontRightDriveMotor, rearLeftDriveMotor, rearRightDriveMotor, imu, timer);
+//        drive = new Drive(frontLeftDriveMotor, frontRightDriveMotor, rearLeftDriveMotor, rearRightDriveMotor, imu, timer);
 
     }
 }
