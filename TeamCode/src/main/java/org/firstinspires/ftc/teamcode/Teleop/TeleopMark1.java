@@ -109,10 +109,10 @@ public class TeleopMark1 extends LinearOpMode {
     private double calcWinchPower(double leftStickY2, double maxPower){
         double power;
         if(leftStickY2 > maxPower){
-            power = 0.7;
+            power = maxPower;
         }
         else if(leftStickY2 < -maxPower){
-            power = -0.7;
+            power = -maxPower;
         }
         else
         {
