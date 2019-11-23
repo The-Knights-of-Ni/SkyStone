@@ -55,8 +55,8 @@ public class TeleopMark1 extends LinearOpMode {
             robot.rearRightDriveMotor.setPower(motorPowers[2]);
             robot.frontRightDriveMotor.setPower(motorPowers[3]);
 
-            robot.xRailWinch.setPower(calcWinchPower(leftStickY2, 0.7)); //max 0.7
-            robot.armTilt.setPower(Math.pow(rightStickY2, 1.0));
+            robot.xRailWinch.setPower(powerLimitCalc(leftStickY2, 0.7)); //max 0.7
+            robot.armTilt.setPower(powerLimitCalc(rightStickY2, 0.8));
 
             if (bumperLeft2) {
                 robot.xRailWinch.setPower(0);
@@ -106,7 +106,7 @@ public class TeleopMark1 extends LinearOpMode {
         return new double[]{lrPower, lfPower, rrPower, rfPower};
     }
 
-    private double calcWinchPower(double leftStickY2, double maxPower){
+    private double powerLimitCalc(double leftStickY2, double maxPower){
         double power;
         if(leftStickY2 > maxPower){
             power = maxPower;
