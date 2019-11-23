@@ -74,11 +74,11 @@ public class Robot {
         armTilt.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         //Servos
-        mainArm = hardwareMap.servo.get("mA");
-        mainRotation = hardwareMap.servo.get("mR");
-        mainClaw = hardwareMap.servo.get("mC");
-        csClaw = hardwareMap.servo.get("csC"); //capstone claw
-        csArm = hardwareMap.servo.get("csA"); //capstone arm
+//        mainArm = hardwareMap.servo.get("mA");
+//        mainRotation = hardwareMap.servo.get("mR");
+//        mainClaw = hardwareMap.servo.get("mC");
+//        csClaw = hardwareMap.servo.get("csC"); //capstone claw
+//        csArm = hardwareMap.servo.get("csA"); //capstone arm
 
         //Sensors
         imu = hardwareMap.get(BNO055IMU.class, "imu");

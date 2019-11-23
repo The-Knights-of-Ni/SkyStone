@@ -37,12 +37,17 @@ public class TeleopMark1 extends LinearOpMode {
             double leftStickX2 = gamepad2.left_stick_x;
             double leftStickY2 = -gamepad2.left_stick_y;
             double rightStickX2 = gamepad2.right_stick_x;
+            double rightStickY2 = gamepad2.right_stick_y;
             boolean aButton2 = gamepad2.a;
             boolean bButton2 = gamepad2.b;
             boolean dPadUp2 = gamepad2.dpad_up;
             boolean dPadDown2 = gamepad2.dpad_down;
             boolean dPadLeft2 = gamepad2.dpad_left;
             boolean dPadRight2 = gamepad2.dpad_right;
+            boolean bumperLeft2 = gamepad2.left_bumper;
+            boolean bumperRight2 = gamepad2.right_bumper;
+
+
 
             double[] motorPowers = calcMotorPowers(leftStickX, leftStickY, rightStickX);
             robot.rearLeftDriveMotor.setPower(-motorPowers[0]);
@@ -50,8 +55,20 @@ public class TeleopMark1 extends LinearOpMode {
             robot.rearRightDriveMotor.setPower(motorPowers[2]);
             robot.frontRightDriveMotor.setPower(motorPowers[3]);
 
-            telemetry.addData("Left Stick X", leftStickX);
-            telemetry.addData("Left Stick Y", -leftStickY);
+            robot.xRailWinch.setPower(calcWinchPower(leftStickY2, 0.7)); //max 0.7
+            robot.armTilt.setPower(Math.pow(rightStickY2, 1.0));
+
+            if (bumperLeft2) {
+                robot.xRailWinch.setPower(0);
+            }
+            if (bumperRight2) {
+                robot.armTilt.setPower(0);
+            }
+
+
+
+            telemetry.addData("Left Stick Y2", leftStickY2);
+            telemetry.addData("Right Stick Y2", rightStickY2);
             telemetry.addData("Right Stick X", rightStickX);
 
             telemetry.addData("", "");
@@ -87,5 +104,20 @@ public class TeleopMark1 extends LinearOpMode {
         double rrPower = r * Math.cos(robotAngle) - rightStickX;
         double rfPower = r * Math.sin(robotAngle) - rightStickX;
         return new double[]{lrPower, lfPower, rrPower, rfPower};
+    }
+
+    private double calcWinchPower(double leftStickY2, double maxPower){
+        double power;
+        if(leftStickY2 > maxPower){
+            power = maxPower;
+        }
+        else if(leftStickY2 < -maxPower){
+            power = -maxPower;
+        }
+        else
+        {
+            power = Math.round(leftStickY2 * 100.0) / 100.0;
+        }
+        return power;
     }
 }
