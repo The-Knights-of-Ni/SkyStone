@@ -1,14 +1,19 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
+<<<<<<< HEAD
+=======
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
+>>>>>>> d827f8fea88cc58a3af4d5b4c9f323b732e67b7d
 
 
 public class omniDirectionalDrive {
 
+<<<<<<< HEAD
+=======
     //Sensors
     private BNO055IMU imu;
     private HardwareMap hardwareMap;
@@ -44,5 +49,6 @@ public class omniDirectionalDrive {
         //Subsystems
 //        drive = new Drive(frontLeftDriveMotor, frontRightDriveMotor, rearLeftDriveMotor, rearRightDriveMotor, imu, timer);
 
+>>>>>>> d827f8fea88cc58a3af4d5b4c9f323b732e67b7d
     }
 }
