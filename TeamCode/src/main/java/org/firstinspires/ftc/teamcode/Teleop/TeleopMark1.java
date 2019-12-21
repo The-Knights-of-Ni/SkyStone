@@ -55,8 +55,10 @@ public class TeleopMark1 extends LinearOpMode {
             robot.rearRightDriveMotor.setPower(motorPowers[2]);
             robot.frontRightDriveMotor.setPower(motorPowers[3]);
 
-            robot.xRailWinch.setPower(powerLimitCalc(leftStickY2, 0.7)); //max 0.7
-            robot.armTilt.setPower(powerLimitCalc(rightStickY2, 0.8));
+//            robot.xRailWinch.setPower(powerLimitCalc(leftStickY2, 0.7)); //max 0.7
+//            robot.armTilt.setPower(powerLimitCalc(rightStickY2, 0.8 ));
+            robot.xRailWinch.setPower(leftStickY2);
+            robot.armTilt.setPower(rightStickY2);
 
             if (bumperLeft2) {
                 robot.xRailWinch.setPower(0);
