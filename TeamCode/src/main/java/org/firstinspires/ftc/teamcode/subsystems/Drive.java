@@ -57,14 +57,14 @@ public class Drive extends Subsystem {
         rearRight.setZeroPowerBehavior(mode);
     }
 
-    public void turn(double power) {
+    public void turnRobot(double power) {
         frontLeft.setPower(power);
         frontRight.setPower(-power);
         rearLeft.setPower(power);
         rearRight.setPower(-power);
     }
 
-    public void setPower(double power) {
+    public void setDrivePower(double power) {
         frontLeft.setPower(power);
         frontRight.setPower(power);
         rearLeft.setPower(power);
