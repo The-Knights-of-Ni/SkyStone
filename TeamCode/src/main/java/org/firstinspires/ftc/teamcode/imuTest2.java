@@ -119,11 +119,12 @@ public class imuTest2 extends LinearOpMode
                 leftMotor.setPower(0);
                 rightMotor.setPower(0);
 
-                // turn 90 degrees right.
                 if (touched || aButton) rotate(-90, power);
+                //if (touched || aButton) rotate(-90, power);
 
                 // turn 90 degrees left.
                 if (bButton) rotate(90, power);
+                //if (bButton) rotate(90, power);
             }
         }
 
