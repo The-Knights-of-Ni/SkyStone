@@ -73,8 +73,6 @@ public class Robot {
         xRailWinch.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         armTilt.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        xRailWinch.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
         //Servos
 //        mainArm = hardwareMap.servo.get("mA");
 //        mainRotation = hardwareMap.servo.get("mR");

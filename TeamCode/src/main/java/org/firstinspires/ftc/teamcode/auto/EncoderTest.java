@@ -15,18 +15,20 @@ import org.firstinspires.ftc.teamcode.Robot;
 public class EncoderTest extends LinearOpMode {
     private static final int targetPosition = 315;
     private static final double maxPower = 0;
-    Robot robot;
+    private Robot robot;
 
     public void initOpMode(){
         ElapsedTime timer = new ElapsedTime();
         robot = new Robot(this, timer);
+        robot.xRailWinch.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.xRailWinch.setTargetPosition(0);
+        robot.xRailWinch.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
     public void runOpMode() {
         initOpMode();
         waitForStart();
         robot.timer.reset();
-        robot.drive.setRunMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        robot.drive.setRunMode(DcMotor.RunMode.RUN_TO_POSITION);
+
 
         robot.drive.frontLeft.setTargetPosition(targetPosition);
         robot.drive.frontRight.setTargetPosition(targetPosition);
