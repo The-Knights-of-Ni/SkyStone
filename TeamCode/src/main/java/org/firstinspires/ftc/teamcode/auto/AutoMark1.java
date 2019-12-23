@@ -109,7 +109,7 @@ public class AutoMark1 extends LinearOpMode {
             tfod.shutdown();
         }
 
-        moveForward(5);
+        moveForward(10);
 
         /*
          * To start up Vuforia, tell it the view that we wish to use for camera monitor (on the RC phone);
