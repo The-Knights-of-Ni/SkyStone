@@ -17,6 +17,7 @@ import org.firstinspires.ftc.teamcode.Robot;
 public class TeleopMark1 extends LinearOpMode {
     //Declare DC motor objects
     private Robot robot;
+    int winchTargetPosition = 0;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -47,9 +48,7 @@ public class TeleopMark1 extends LinearOpMode {
             boolean bumperLeft2 = gamepad2.left_bumper;
             boolean bumperRight2 = gamepad2.right_bumper;
 
-            int winchTargetPosition = 0;
-            robot.xRailWinch.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            robot.xRailWinch.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
 
 
             double[] motorPowers = calcMotorPowers(leftStickX, leftStickY, rightStickX);
@@ -91,8 +90,8 @@ public class TeleopMark1 extends LinearOpMode {
         ElapsedTime timer = new ElapsedTime();
         robot = new Robot(this, timer);
         robot.xRailWinch.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        robot.xRailWinch.setTargetPosition(0);
         robot.xRailWinch.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.xRailWinch.setTargetPosition(0);
 //        robot.init();
 //        lrDrive = hardwareMap.dcMotor.get("lrDrive");
 //        lfDrive = hardwareMap.dcMotor.get("lfDrive");
