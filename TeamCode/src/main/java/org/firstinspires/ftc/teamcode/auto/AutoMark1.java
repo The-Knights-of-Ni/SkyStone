@@ -59,13 +59,6 @@ public class AutoMark1 extends LinearOpMode {
 
     //Encoder Constants
 
-    /**
-     * If you are standing in the Red Alliance Station looking towards the center of the field,
-     *     - The X axis runs from your left to the right. (positive from the center to the right)
-     *     - The Y axis runs from the Red Alliance Station towards the other side of the field
-     *       where the Blue Alliance Station is. (Positive is from the center, towards the BlueAlliance station)
-     *     - The Z axis runs from the floor, upwards towards the ceiling.  (Positive is above the floor)
-     **/
     // Field parameters
     private static final double     FIELD_X    = 72.0;
     private static final double     FIELD_Y    = 72.0;
@@ -75,10 +68,6 @@ public class AutoMark1 extends LinearOpMode {
     private static final double     ROBOT_INIT_POS_Y    = 15.0;
     private static final double     ROBOT_INIT_ANGLE    = 45.0;
 
-//    // Robot initial position (right lander) (Depot side)
-//    private static final double     ROBOT_INIT_POS_X    = -15.0;
-//    private static final double     ROBOT_INIT_POS_Y    = 15.0;
-//    private static final double     ROBOT_INIT_ANGLE    = 135.0;
 
     private static final double     ROBOT_HALF_LENGTH    = 9.0;
 
@@ -103,7 +92,7 @@ public class AutoMark1 extends LinearOpMode {
     private boolean targetVisible = false;
     private static final VuforiaLocalizer.CameraDirection CAMERA_CHOICE = BACK;
 
-    private VuforiaTrackables targetsRoverRuckus;
+    private VuforiaTrackables targetsSkyStone;
     private List<VuforiaTrackable> allTrackables;
 
     @Override
@@ -139,18 +128,6 @@ public class AutoMark1 extends LinearOpMode {
         // OR...  Do Not Activate the Camera Monitor View, to save power
         // VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters();
 
-        /*
-         * IMPORTANT: You need to obtain your own license key to use Vuforia. The string below with which
-         * 'parameters.vuforiaLicenseKey' is initialized is for illustration only, and will not function.
-         * A Vuforia 'Development' license key, can be obtained free of charge from the Vuforia developer
-         * web site at https://developer.vuforia.com/license-manager.
-         *
-         * Vuforia license keys are always 380 characters long, and look as if they contain mostly
-         * random data. As an example, here is a example of a fragment of a valid key:
-         *      ... yIgIzTqZ4mWjk9wd3cZO9T1axEqzuhxoGlfOOI2dRzKS4T0hQ8kT ...
-         * Once you've obtained a license key, copy the string from the Vuforia web site
-         * and paste it in to your code on the next line, between the double quotes.
-         */
         parameters.vuforiaLicenseKey =
                 "AR194VT/////AAABmV+h6Y9UMUSyo6qzOXtt2dAwNZ9bJ8m/6RSx/0vIwbrT4cjrgvkWuEXawFdMC7y6rbDpSZTcSs+eRZxKp0k43J6jKJktNwCLMF2iPA6yfQ6pNOIwOCoYIGC+uGdSi9+E+g9l7OH+zUWl6CXHyhUwbwTIFlduAIVaX0I2kpPuxJO4drMmZzEwsr7nHME98s/eNV30jACsP6yhUN/7w+CNEDcIvGM+J+16B978QXaGHa23ACXSkv0gXwLaztGPuPrLAfSd0kmnIaAgbDm0BUdTayFhVFaVU/VgvAjgZ7eT40BoOkAtvayDx+uPmjfTibskPk0n/eosVD7I2uxaBLHJ20w6xgOqCYlnWZ11axpyiECJ";;
 
@@ -196,62 +173,6 @@ public class AutoMark1 extends LinearOpMode {
         float mmBotWidth       = 18 * mmPerInch;            // ... or whatever is right for your robot
         float mmFTCFieldWidth  = (12*12 - 2) * mmPerInch;   // the FTC field is ~11'10" center-to-center of the glass panels
 
-        /**
-         * In order for localization to work, we need to tell the system where each target we
-         * wish to use for navigation resides on the field, and we need to specify where on the robot
-         * the phone resides. These specifications are in the form of <em>transformation matrices.</em>
-         * Transformation matrices are a central, important concept in the math here involved in localization.
-         * See <a href="https://en.wikipedia.org/wiki/Transformation_matrix">Transformation Matrix</a>
-         * for detailed information. Commonly, you'll encounter transformation matrices as instances
-         * of the {@link OpenGLMatrix} class.
-         *
-         * For the most part, you don't need to understand the details of the math of how transformation
-         * matrices work inside (as fascinating as that is, truly). Just remember these key points:
-         * <ol>
-         *
-         *     <li>You can put two transformations together to produce a third that combines the effect of
-         *     both of them. If, for example, you have a rotation transform R and a translation transform T,
-         *     then the combined transformation matrix RT which does the rotation first and then the translation
-         *     is given by {@code RT = T.multiplied(R)}. That is, the transforms are multiplied in the
-         *     <em>reverse</em> of the chronological order in which they applied.</li>
-         *
-         *     <li>A common way to create useful transforms is to use methods in the {@link OpenGLMatrix}
-         *     class and the Orientation class. See, for example, {@link OpenGLMatrix#translation(float,
-         *     float, float)}, {@link OpenGLMatrix#rotation(AngleUnit, float, float, float, float)}, and
-         *     {@link Orientation#getRotationMatrix(AxesReference, AxesOrder, AngleUnit, float, float, float)}.
-         *     Related methods in {@link OpenGLMatrix}, such as {@link OpenGLMatrix#rotated(AngleUnit,
-         *     float, float, float, float)}, are syntactic shorthands for creating a new transform and
-         *     then immediately multiplying the receiver by it, which can be convenient at times.</li>
-         *
-         *     <li>If you want to break open the black box of a transformation matrix to understand
-         *     what it's doing inside, use {@link MatrixF#getTranslation()} to fetch how much the
-         *     transform will move you in x, y, and z, and use {@link Orientation#getOrientation(MatrixF,
-         *     AxesReference, AxesOrder, AngleUnit)} to determine the rotational motion that the transform
-         *     will impart. See {@link #format(OpenGLMatrix)} below for an example.</li>
-         *
-         * </ol>
-         *
-         * This example places the "stones" image on the perimeter wall to the Left
-         *  of the Red Driver station wall.  Similar to the Red Beacon Location on the Res-Q
-         *
-         * This example places the "chips" image on the perimeter wall to the Right
-         *  of the Blue Driver station.  Similar to the Blue Beacon Location on the Res-Q
-         *
-         * See the doc folder of this project for a description of the field Axis conventions.
-         *
-         * Initially the target is conceptually lying at the origin of the field's coordinate system
-         * (the center of the field), facing up.
-         *
-         * In this configuration, the target's coordinate system aligns with that of the field.
-         *
-         * In a real situation we'd also account for the vertical (Z) offset of the target,
-         * but for simplicity, we ignore that here; for a real robot, you'll want to fix that.
-         *
-         * To place the Stones Target on the Red Audience wall:
-         * - First we rotate it 90 around the field's X axis to flip it upright
-         * - Then we rotate it  90 around the field's Z access to face it away from the audience.
-         * - Finally, we translate it back along the X axis towards the red audience wall.
-         */
         OpenGLMatrix redTargetLocationOnField = OpenGLMatrix
                 /* Then we translate the target off to the RED WALL. Our translation here
                 is a negative translation in X.*/
@@ -279,18 +200,7 @@ public class AutoMark1 extends LinearOpMode {
         blueTarget.setLocation(blueTargetLocationOnField);
         RobotLog.ii(TAG, "Blue Target=%s", format(blueTargetLocationOnField));
 
-        /**
-         * Create a transformation matrix describing where the phone is on the robot. Here, we
-         * put the phone on the right hand side of the robot with the screen facing in (see our
-         * choice of BACK camera above) and in landscape mode. Starting from alignment between the
-         * robot's and phone's axes, this is a rotation of -90deg along the Y axis.
-         *
-         * When determining whether a rotation is positive or negative, consider yourself as looking
-         * down the (positive) axis of rotation from the positive towards the origin. Positive rotations
-         * are then CCW, and negative rotations CW. An example: consider looking down the positive Z
-         * axis towards the origin. A positive rotation about Z (ie: a rotation parallel to the the X-Y
-         * plane) is then CCW, as one would normally expect from the usual classic 2D geometry.
-         */
+
         OpenGLMatrix phoneLocationOnRobot = OpenGLMatrix
                 .translation(mmBotWidth/2,0,0)
                 .multiplied(Orientation.getRotationMatrix(
@@ -306,24 +216,6 @@ public class AutoMark1 extends LinearOpMode {
         ((VuforiaTrackableDefaultListener)redTarget.getListener()).setPhoneInformation(phoneLocationOnRobot, parameters.cameraDirection);
         ((VuforiaTrackableDefaultListener)blueTarget.getListener()).setPhoneInformation(phoneLocationOnRobot, parameters.cameraDirection);
 
-        /**
-         * A brief tutorial: here's how all the math is going to work:
-         *
-         * C = phoneLocationOnRobot  maps   phone coords -> robot coords
-         * P = tracker.getPose()     maps   image target coords -> phone coords
-         * L = redTargetLocationOnField maps   image target coords -> field coords
-         *
-         * So
-         *
-         * C.inverted()              maps   robot coords -> phone coords
-         * P.inverted()              maps   phone coords -> imageTarget coords
-         *
-         * Putting that all together,
-         *
-         * L x P.inverted() x C.inverted() maps robot coords to field coords.
-         *
-         * @see VuforiaTrackableDefaultListener#getRobotLocation()
-         */
 
         /** Wait for the game to begin */
         telemetry.addData(">", "Press Play to start tracking");
@@ -404,111 +296,38 @@ public class AutoMark1 extends LinearOpMode {
         tfod = ClassFactory.getInstance().createTFObjectDetector(tfodParameters, vuforia);
         tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABEL_FIRST_ELEMENT, LABEL_SECOND_ELEMENT);
 
-        //Vuforia Navigation Init
-        // Load the data sets that for the trackable objects. These particular data
-        // sets are stored in the 'assets' part of our application.
-        targetsRoverRuckus = this.vuforia.loadTrackablesFromAsset("RoverRuckus");
-        VuforiaTrackable blueRover = targetsRoverRuckus.get(0);
-        blueRover.setName("Blue-Rover");
-        VuforiaTrackable redFootprint = targetsRoverRuckus.get(1);
-        redFootprint.setName("Red-Footprint");
-        VuforiaTrackable frontCraters = targetsRoverRuckus.get(2);
-        frontCraters.setName("Front-Craters");
-        VuforiaTrackable backSpace = targetsRoverRuckus.get(3);
-        backSpace.setName("Back-Space");
+        VuforiaTrackables targetsSkyStone = this.vuforia.loadTrackablesFromAsset("Skystone");
+
+//        VuforiaTrackable stoneTarget = targetsSkyStone.get(0);
+//        stoneTarget.setName("Stone Target");
+//        VuforiaTrackable blueRearBridge = targetsSkyStone.get(1);
+//        blueRearBridge.setName("Blue Rear Bridge");
+//        VuforiaTrackable redRearBridge = targetsSkyStone.get(2);
+//        redRearBridge.setName("Red Rear Bridge");
+//        VuforiaTrackable redFrontBridge = targetsSkyStone.get(3);
+//        redFrontBridge.setName("Red Front Bridge");
+//        VuforiaTrackable blueFrontBridge = targetsSkyStone.get(4);
+//        blueFrontBridge.setName("Blue Front Bridge");
+//        VuforiaTrackable red1 = targetsSkyStone.get(5);
+//        red1.setName("Red Perimeter 1");
+//        VuforiaTrackable red2 = targetsSkyStone.get(6);
+//        red2.setName("Red Perimeter 2");
+//        VuforiaTrackable front1 = targetsSkyStone.get(7);
+//        front1.setName("Front Perimeter 1");
+//        VuforiaTrackable front2 = targetsSkyStone.get(8);
+//        front2.setName("Front Perimeter 2");
+//        VuforiaTrackable blue1 = targetsSkyStone.get(9);
+//        blue1.setName("Blue Perimeter 1");
+//        VuforiaTrackable blue2 = targetsSkyStone.get(10);
+//        blue2.setName("Blue Perimeter 2");
+//        VuforiaTrackable rear1 = targetsSkyStone.get(11);
+//        rear1.setName("Rear Perimeter 1");
+//        VuforiaTrackable rear2 = targetsSkyStone.get(12);
+//        rear2.setName("Rear Perimeter 2");
 
         // For convenience, gather together all the trackable objects in one easily-iterable collection */
-        allTrackables = new ArrayList<VuforiaTrackable>();
-        allTrackables.addAll(targetsRoverRuckus);
-
-        /**
-         * In order for localization to work, we need to tell the system where each target is on the field, and
-         * where the phone resides on the robot.  These specifications are in the form of <em>transformation matrices.</em>
-         * Transformation matrices are a central, important concept in the math here involved in localization.
-         * See <a href="https://en.wikipedia.org/wiki/Transformation_matrix">Transformation Matrix</a>
-         * for detailed information. Commonly, you'll encounter transformation matrices as instances
-         * of the {@link OpenGLMatrix} class.
-         *
-         * If you are standing in the Red Alliance Station looking towards the center of the field,
-         *     - The X axis runs from your left to the right. (positive from the center to the right)
-         *     - The Y axis runs from the Red Alliance Station towards the other side of the field
-         *       where the Blue Alliance Station is. (Positive is from the center, towards the BlueAlliance station)
-         *     - The Z axis runs from the floor, upwards towards the ceiling.  (Positive is above the floor)
-         *
-         * This Rover Ruckus sample places a specific target in the middle of each perimeter wall.
-         *
-         * Before being transformed, each target image is conceptually located at the origin of the field's
-         *  coordinate system (the center of the field), facing up.
-         */
-
-        /**
-         * To place the BlueRover target in the middle of the blue perimeter wall:
-         * - First we rotate it 90 around the field's X axis to flip it upright.
-         * - Then, we translate it along the Y axis to the blue perimeter wall.
-         */
-        OpenGLMatrix blueRoverLocationOnField = OpenGLMatrix
-                .translation(0, mmFTCFieldWidth, mmTargetHeight)
-                .multiplied(Orientation.getRotationMatrix(EXTRINSIC, XYZ, DEGREES, 90, 0, 0));
-        blueRover.setLocation(blueRoverLocationOnField);
-
-        /**
-         * To place the RedFootprint target in the middle of the red perimeter wall:
-         * - First we rotate it 90 around the field's X axis to flip it upright.
-         * - Second, we rotate it 180 around the field's Z axis so the image is flat against the red perimeter wall
-         *   and facing inwards to the center of the field.
-         * - Then, we translate it along the negative Y axis to the red perimeter wall.
-         */
-        OpenGLMatrix redFootprintLocationOnField = OpenGLMatrix
-                .translation(0, -mmFTCFieldWidth, mmTargetHeight)
-                .multiplied(Orientation.getRotationMatrix(EXTRINSIC, XYZ, DEGREES, 90, 0, 180));
-        redFootprint.setLocation(redFootprintLocationOnField);
-
-        /**
-         * To place the FrontCraters target in the middle of the front perimeter wall:
-         * - First we rotate it 90 around the field's X axis to flip it upright.
-         * - Second, we rotate it 90 around the field's Z axis so the image is flat against the front wall
-         *   and facing inwards to the center of the field.
-         * - Then, we translate it along the negative X axis to the front perimeter wall.
-         */
-        OpenGLMatrix frontCratersLocationOnField = OpenGLMatrix
-                .translation(-mmFTCFieldWidth, 0, mmTargetHeight)
-                .multiplied(Orientation.getRotationMatrix(EXTRINSIC, XYZ, DEGREES, 90, 0 , 90));
-        frontCraters.setLocation(frontCratersLocationOnField);
-
-        /**
-         * To place the BackSpace target in the middle of the back perimeter wall:
-         * - First we rotate it 90 around the field's X axis to flip it upright.
-         * - Second, we rotate it -90 around the field's Z axis so the image is flat against the back wall
-         *   and facing inwards to the center of the field.
-         * - Then, we translate it along the X axis to the back perimeter wall.
-         */
-        OpenGLMatrix backSpaceLocationOnField = OpenGLMatrix
-                .translation(mmFTCFieldWidth, 0, mmTargetHeight)
-                .multiplied(Orientation.getRotationMatrix(EXTRINSIC, XYZ, DEGREES, 90, 0, -90));
-        backSpace.setLocation(backSpaceLocationOnField);
-
-        /**
-         * Create a transformation matrix describing where the phone is on the robot.
-         *
-         * The coordinate frame for the robot looks the same as the field.
-         * The robot's "forward" direction is facing out along X axis, with the LEFT side facing out along the Y axis.
-         * Z is UP on the robot.  This equates to a bearing angle of Zero degrees.
-         *
-         * The phone starts out lying flat, with the screen facing Up and with the physical top of the phone
-         * pointing to the LEFT side of the Robot.  It's very important when you test this code that the top of the
-         * camera is pointing to the left side of the  robot.  The rotation angles don't work if you flip the phone.
-         *
-         * If using the rear (High Res) camera:
-         * We need to rotate the camera around it's long axis to bring the rear camera forward.
-         * This requires a negative 90 degree rotation on the Y axis
-         *
-         * If using the Front (Low Res) camera
-         * We need to rotate the camera around it's long axis to bring the FRONT camera forward.
-         * This requires a Positive 90 degree rotation on the Y axis
-         *
-         * Next, translate the camera lens to where it is on the robot.
-         * In this example, it is centered (left to right), but 110 mm forward of the middle of the robot, and 200 mm above ground level.
-         */
+        List<VuforiaTrackable> allTrackables = new ArrayList<>();
+        allTrackables.addAll(targetsSkyStone);
 
         final int CAMERA_FORWARD_DISPLACEMENT  = 110;   // eg: Camera is 110 mm in front of robot center
         final int CAMERA_VERTICAL_DISPLACEMENT = 200;   // eg: Camera is 200 mm above ground
@@ -535,7 +354,7 @@ public class AutoMark1 extends LinearOpMode {
 
     private double[] robotPosNav() {
         /** Start tracking the data sets we care about. */
-        targetsRoverRuckus.activate();
+        targetsSkyStone.activate();
 
         // check all the trackable target to see which one (if any) is visible.
         targetVisible = false;
