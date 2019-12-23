@@ -54,15 +54,6 @@ public class AutoMark1 extends LinearOpMode {
     private static final double     TURN_SPEED              = 0.3;
 
 
-    //Timing Constants
-    private static final int PICTOGRAPH_TIMEOUT = 5000;
-
-    //Encoder Constants
-
-    // Field parameters
-    private static final double     FIELD_X    = 72.0;
-    private static final double     FIELD_Y    = 72.0;
-
     // Robot initial position (left lander) (Crater side)
     private static final double     ROBOT_INIT_POS_X    = 15.0;
     private static final double     ROBOT_INIT_POS_Y    = 15.0;
@@ -118,6 +109,8 @@ public class AutoMark1 extends LinearOpMode {
             tfod.shutdown();
         }
 
+        moveForward(5);
+
         /*
          * To start up Vuforia, tell it the view that we wish to use for camera monitor (on the RC phone);
          * If no camera monitor is desired, use the parameterless constructor instead (commented out below).
@@ -137,6 +130,75 @@ public class AutoMark1 extends LinearOpMode {
          * for a competition robot, the front camera might be more convenient.
          */
         parameters.cameraDirection = VuforiaLocalizer.CameraDirection.BACK;
+
+
+
+        /** Wait for the game to begin */
+        telemetry.addData(">", "Press Play to start tracking");
+        telemetry.update();
+        waitForStart();
+
+//        /** Start tracking the data sets we care about. */
+//        stonesAndChips.activate();
+
+        while (opModeIsActive()) {
+
+            for (VuforiaTrackable trackable : allTrackables) {
+                /**
+                 * getUpdatedRobotLocation() will return null if no new information is available since
+                 * the last time that call was made, or if the trackable is not currently visible.
+                 * getRobotLocation() will return null if the trackable is not currently visible.
+                 */
+                telemetry.addData(trackable.getName(), ((VuforiaTrackableDefaultListener)trackable.getListener()).isVisible() ? "Visible" : "Not Visible");    //
+
+                OpenGLMatrix robotLocationTransform = ((VuforiaTrackableDefaultListener)trackable.getListener()).getUpdatedRobotLocation();
+                if (robotLocationTransform != null) {
+                    lastLocation = robotLocationTransform;
+                }
+            }
+            /**
+             * Provide feedback as to where the robot was last located (if we know).
+             */
+            if (lastLocation != null) {
+                //  RobotLog.vv(TAG, "robot=%s", format(lastLocation));
+                telemetry.addData("Pos", format(lastLocation));
+            } else {
+                telemetry.addData("Pos", "Unknown");
+            }
+            telemetry.update();
+        }
+    }
+
+    /**
+     * A simple utility that extracts positioning information from a transformation matrix
+     * and formats it in a form palatable to a human being.
+     */
+    String format(OpenGLMatrix transformationMatrix) {
+        return transformationMatrix.formatAsTransform();
+    }
+
+    private void initRobot() {
+        robot.init();
+        robot.drive.setRunMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.drive.setRunMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        // Vuforia Init
+        initVuforiaEngine();
+        telemetry.addLine("Finished Vuforia Initialization.");
+        telemetry.update();
+
+        telemetry.addLine("Finished Initialization. Waiting for start.");
+        telemetry.update();
+        Log.d(TAG, "Finished Initialization. Waiting for start.");
+    }
+
+    private void initVuforiaEngine() {
+        //Vuforia initialization
+
+        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+        VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
+        parameters.vuforiaLicenseKey = "AVjXPzj/////AAABmQ0V3DHJw0P5lI39lVnXqNN+qX1uwVniSS5pN2zeI7ng4z9OkAMad+79Zv+vPtirvt1/Ai6dD+bZL04LynwBqdGmNSXaTXzHd21vpZdiBxmGt9Gb6nMP/p2gTc5wU6hVRJqTe+KexOqzppYs79i5rGbbwO7bZUxpXR5tJeLzicXi3prSnh49SK+kxyTX9XfsjG90+H2TfzVjpYhbX26Qi/abV4uMn7xgzC1q7L54Caixa1aytY3F/NnWAC+87mG5ghf4tcH0CPVFoYEUa0wKMG1bMWOPSfyRG/BBWdaxd1bsIU0xhI5i24nr5LXIrw2JI286TduItR/IH4WRonVA6tbz9QuuhSLlDocIgbwxIbJB";
+        parameters.cameraName = hardwareMap.get(WebcamName.class, "Webcam 1");
 
         /**
          * Instantiate the Vuforia engine
@@ -216,127 +278,9 @@ public class AutoMark1 extends LinearOpMode {
         ((VuforiaTrackableDefaultListener)redTarget.getListener()).setPhoneInformation(phoneLocationOnRobot, parameters.cameraDirection);
         ((VuforiaTrackableDefaultListener)blueTarget.getListener()).setPhoneInformation(phoneLocationOnRobot, parameters.cameraDirection);
 
-
-        /** Wait for the game to begin */
-        telemetry.addData(">", "Press Play to start tracking");
-        telemetry.update();
-        waitForStart();
-
-        /** Start tracking the data sets we care about. */
-        stonesAndChips.activate();
-
-        while (opModeIsActive()) {
-
-            for (VuforiaTrackable trackable : allTrackables) {
-                /**
-                 * getUpdatedRobotLocation() will return null if no new information is available since
-                 * the last time that call was made, or if the trackable is not currently visible.
-                 * getRobotLocation() will return null if the trackable is not currently visible.
-                 */
-                telemetry.addData(trackable.getName(), ((VuforiaTrackableDefaultListener)trackable.getListener()).isVisible() ? "Visible" : "Not Visible");    //
-
-                OpenGLMatrix robotLocationTransform = ((VuforiaTrackableDefaultListener)trackable.getListener()).getUpdatedRobotLocation();
-                if (robotLocationTransform != null) {
-                    lastLocation = robotLocationTransform;
-                }
-            }
-            /**
-             * Provide feedback as to where the robot was last located (if we know).
-             */
-            if (lastLocation != null) {
-                //  RobotLog.vv(TAG, "robot=%s", format(lastLocation));
-                telemetry.addData("Pos", format(lastLocation));
-            } else {
-                telemetry.addData("Pos", "Unknown");
-            }
-            telemetry.update();
-        }
-    }
-
-    /**
-     * A simple utility that extracts positioning information from a transformation matrix
-     * and formats it in a form palatable to a human being.
-     */
-    String format(OpenGLMatrix transformationMatrix) {
-        return transformationMatrix.formatAsTransform();
-    }
-
-    private void initRobot() {
-        robot.init();
-        robot.drive.setRunMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        robot.drive.setRunMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-        // Vuforia Init
-        initVuforiaEngine();
-        telemetry.addLine("Finished Vuforia Initialization.");
-        telemetry.update();
-
-        telemetry.addLine("Finished Initialization. Waiting for start.");
-        telemetry.update();
-        Log.d(TAG, "Finished Initialization. Waiting for start.");
-    }
-
-    private void initVuforiaEngine() {
-        //Vuforia initialization
-
-        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
-        parameters.vuforiaLicenseKey = "AVjXPzj/////AAABmQ0V3DHJw0P5lI39lVnXqNN+qX1uwVniSS5pN2zeI7ng4z9OkAMad+79Zv+vPtirvt1/Ai6dD+bZL04LynwBqdGmNSXaTXzHd21vpZdiBxmGt9Gb6nMP/p2gTc5wU6hVRJqTe+KexOqzppYs79i5rGbbwO7bZUxpXR5tJeLzicXi3prSnh49SK+kxyTX9XfsjG90+H2TfzVjpYhbX26Qi/abV4uMn7xgzC1q7L54Caixa1aytY3F/NnWAC+87mG5ghf4tcH0CPVFoYEUa0wKMG1bMWOPSfyRG/BBWdaxd1bsIU0xhI5i24nr5LXIrw2JI286TduItR/IH4WRonVA6tbz9QuuhSLlDocIgbwxIbJB";
-        parameters.cameraName = hardwareMap.get(WebcamName.class, "Webcam 1");
-
-        //  Instantiate the Vuforia engine
-        vuforia = ClassFactory.getInstance().createVuforia(parameters);
-        // Loading trackables is not necessary for the Tensor Flow Object Detection engine.
-        telemetry.addLine("Vuforia Init Done");
-        telemetry.update();
-        //Tensorflow init
-        int tfodMonitorViewId = hardwareMap.appContext.getResources().getIdentifier(
-                "tfodMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        TFObjectDetector.Parameters tfodParameters = new TFObjectDetector.Parameters(tfodMonitorViewId);
-        tfod = ClassFactory.getInstance().createTFObjectDetector(tfodParameters, vuforia);
-        tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABEL_FIRST_ELEMENT, LABEL_SECOND_ELEMENT);
-
-        VuforiaTrackables targetsSkyStone = this.vuforia.loadTrackablesFromAsset("Skystone");
-
-//        VuforiaTrackable stoneTarget = targetsSkyStone.get(0);
-//        stoneTarget.setName("Stone Target");
-//        VuforiaTrackable blueRearBridge = targetsSkyStone.get(1);
-//        blueRearBridge.setName("Blue Rear Bridge");
-//        VuforiaTrackable redRearBridge = targetsSkyStone.get(2);
-//        redRearBridge.setName("Red Rear Bridge");
-//        VuforiaTrackable redFrontBridge = targetsSkyStone.get(3);
-//        redFrontBridge.setName("Red Front Bridge");
-//        VuforiaTrackable blueFrontBridge = targetsSkyStone.get(4);
-//        blueFrontBridge.setName("Blue Front Bridge");
-//        VuforiaTrackable red1 = targetsSkyStone.get(5);
-//        red1.setName("Red Perimeter 1");
-//        VuforiaTrackable red2 = targetsSkyStone.get(6);
-//        red2.setName("Red Perimeter 2");
-//        VuforiaTrackable front1 = targetsSkyStone.get(7);
-//        front1.setName("Front Perimeter 1");
-//        VuforiaTrackable front2 = targetsSkyStone.get(8);
-//        front2.setName("Front Perimeter 2");
-//        VuforiaTrackable blue1 = targetsSkyStone.get(9);
-//        blue1.setName("Blue Perimeter 1");
-//        VuforiaTrackable blue2 = targetsSkyStone.get(10);
-//        blue2.setName("Blue Perimeter 2");
-//        VuforiaTrackable rear1 = targetsSkyStone.get(11);
-//        rear1.setName("Rear Perimeter 1");
-//        VuforiaTrackable rear2 = targetsSkyStone.get(12);
-//        rear2.setName("Rear Perimeter 2");
-
-        // For convenience, gather together all the trackable objects in one easily-iterable collection */
-        List<VuforiaTrackable> allTrackables = new ArrayList<>();
-        allTrackables.addAll(targetsSkyStone);
-
         final int CAMERA_FORWARD_DISPLACEMENT  = 110;   // eg: Camera is 110 mm in front of robot center
         final int CAMERA_VERTICAL_DISPLACEMENT = 200;   // eg: Camera is 200 mm above ground
         final int CAMERA_LEFT_DISPLACEMENT     = 0;     // eg: Camera is ON the robot's center line
-
-        OpenGLMatrix phoneLocationOnRobot = OpenGLMatrix
-                .translation(CAMERA_FORWARD_DISPLACEMENT, CAMERA_LEFT_DISPLACEMENT, CAMERA_VERTICAL_DISPLACEMENT)
-                .multiplied(Orientation.getRotationMatrix(EXTRINSIC, YZX, DEGREES,
-                        CAMERA_CHOICE == FRONT ? 90 : -90, 0, 0));
 
         /**  Let all the trackable listeners know where the phone is.  */
         for (VuforiaTrackable trackable : allTrackables)
