@@ -103,7 +103,7 @@ public class imuTest2 extends LinearOpMode
             robot.drive.rearLeft.setPower(power);
             robot.drive.frontRight.setPower(power);
             robot.drive.rearRight.setPower(power);
-
+            resetAngle();
         }
 
         // turn the motors off.
