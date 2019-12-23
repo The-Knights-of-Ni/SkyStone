@@ -38,21 +38,23 @@ public class EncoderTest extends LinearOpMode {
 //        robot.frontRightDriveMotor.setPower(maxPower);
 
         while (opModeIsActive() && robot.drive.frontLeft.isBusy() && robot.drive.frontRight.isBusy()) {
-            telemetry.addData("Front Left", robot.drive.frontLeft.getCurrentPosition());
-            telemetry.addData("Front Right", robot.drive.frontRight.getCurrentPosition());
-            telemetry.addData("Rear Left", robot.drive.rearLeft.getCurrentPosition());
-            telemetry.addData("Rear Right", robot.drive.rearRight.getCurrentPosition());
-            telemetry.update();
-        }
-        sleep(1000);
-        robot.drive.setRunMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        robot.drive.setRunMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        while (opModeIsActive() && robot.drive.getYaw() > -86) {
-            telemetry.addData("Yaw", robot.drive.getYaw());
-            telemetry.update();
+//            telemetry.addData("Front Left", robot.drive.frontLeft.getCurrentPosition());
+//            telemetry.addData("Front Right", robot.drive.frontRight.getCurrentPosition());
+//            telemetry.addData("Rear Left", robot.drive.rearLeft.getCurrentPosition());
+//            telemetry.addData("Rear Right", robot.drive.rearRight.getCurrentPosition());
+            telemetry.addData("Winch", robot.xRailWinch.getCurrentPosition());
 
-            robot.drive.turnRobot(0.25);
+            telemetry.update();
         }
+//        sleep(1000);
+//        robot.drive.setRunMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//        robot.drive.setRunMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//        while (opModeIsActive() && robot.drive.getYaw() > -86) {
+//            telemetry.addData("Yaw", robot.drive.getYaw());
+//            telemetry.update();
+//
+//            robot.drive.turnRobot(0.25);
+//        }
         sleep(1000);
 
         robot.drive.stop();
