@@ -63,6 +63,9 @@ public class TeleopMark1 extends LinearOpMode {
             //930mm, 8410 encoder count
 
             robot.xRailWinch.setTargetPosition(winchTargetPosition);
+            if((rightStickY2 > 0.1) && (rightStickY2 < 0.5)){
+                
+            }
 
 
 
