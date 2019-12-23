@@ -63,21 +63,21 @@ public class Drive extends Subsystem {
         rearRight.setZeroPowerBehavior(mode);
     }
 
-    public void turn(double power) {
+    public void turnRobot(double power) {
         frontLeft.setPower(power);
         frontRight.setPower(-power);
         rearLeft.setPower(power);
         rearRight.setPower(-power);
     }
 
-    public void setPower(double power) {
+    public void setDrivePower(double power) {
         frontLeft.setPower(power);
         frontRight.setPower(power);
         rearLeft.setPower(power);
         rearRight.setPower(power);
     }
 
-    public void setTargetPosition(int targetPosition) {
+    public void setDriveTargetPosition(int targetPosition) {
         frontLeft.setTargetPosition(targetPosition);
         frontRight.setTargetPosition(targetPosition);
         rearLeft.setTargetPosition(targetPosition);
@@ -96,7 +96,7 @@ public class Drive extends Subsystem {
             // counter-clockwise
             double currentAngle = initialAngle;
             while (Math.abs(currentAngle - initialAngle - turnAngle) > 2) {
-                turn(-power);
+                turnRobot(-power);
                 currentAngle = getYaw();
                 if (currentAngle < initialAngle) {
                     // angle wraparound
@@ -107,7 +107,7 @@ public class Drive extends Subsystem {
             // clockwise
             double currentAngle = initialAngle;
             while (Math.abs(currentAngle - initialAngle - turnAngle) > 2) {
-                turn(power);
+                turnRobot(power);
                 currentAngle = getYaw();
                 if (currentAngle > initialAngle) {
                     // angle wraparound
