@@ -29,8 +29,7 @@ public class imuTest2 extends LinearOpMode
     private Robot robot;
     private BNO055IMU imu;
     Orientation             lastAngles = new Orientation();
-    double                  globalAngle, power = .30, correction;
-    boolean                 aButton, bButton, touched;
+    double                  globalAngle, power = .30;
     private void initOpMode() {
         //Initialize DC motor objects
         ElapsedTime timer = new ElapsedTime();
@@ -42,10 +41,7 @@ public class imuTest2 extends LinearOpMode
     @Override
     public void runOpMode() throws InterruptedException
     {
-        //leftMotor = hardwareMap.dcMotor.get("left_motor");
-        //rightMotor = hardwareMap.dcMotor.get("right_motor");
-
-        //leftMotor.setDirection(DcMotor.Direction.REVERSE);
+        initOpMode();
         robot.frontLeftDriveMotor.setDirection(DcMotor.Direction.REVERSE);
         robot.rearLeftDriveMotor.setDirection(DcMotor.Direction.REVERSE);
 
@@ -97,40 +93,17 @@ public class imuTest2 extends LinearOpMode
         while (opModeIsActive())
         {
             // Use gyro to drive in a straight line.
-            correction = checkDirection();
 
             telemetry.addData("1 imu heading", lastAngles.firstAngle);
             telemetry.addData("2 global heading", globalAngle);
-            telemetry.addData("3 correction", correction);
+            //telemetry.addData("3 correction", correction);
             telemetry.update();
 
-            robot.drive.frontLeft.setPower(power - correction);
-            robot.drive.rearLeft.setPower(power - correction);
-            robot.drive.frontRight.setPower(power + correction);
-            robot.drive.rearRight.setPower(power + correction);
+            robot.drive.frontLeft.setPower(power);
+            robot.drive.rearLeft.setPower(power);
+            robot.drive.frontRight.setPower(power);
+            robot.drive.rearRight.setPower(power);
 
-            // We record the sensor values because we will test them in more than
-            // one place with time passing between those places. See the lesson on
-            // Timing Considerations to know why.
-
-
-            if (touched || aButton || bButton)
-            {
-                // backup.
-                robot.drive.setDrivePower(power);
-
-                sleep(500);
-
-                // stop.
-                robot.drive.setDrivePower(0);
-
-                if (touched || aButton) rotate(-90, power);
-                //if (touched || aButton) rotate(-90, power);
-
-                // turn 90 degrees left.
-                if (bButton) rotate(90, power);
-                //if (bButton) rotate(90, power);
-            }
         }
 
         // turn the motors off.
@@ -177,79 +150,4 @@ public class imuTest2 extends LinearOpMode
         return globalAngle;
     }
 
-    /**
-     * See if we are moving in a straight line and if not return a power correction value.
-     * @return Power adjustment, + is adjust left - is adjust right.
-     */
-    private double checkDirection()
-    {
-        // The gain value determines how sensitive the correction is to direction changes.
-        // You will have to experiment with your robot to get small smooth direction changes
-        // to stay on a straight line.
-        double correction, angle, gain = .10;
-
-        angle = getAngle();
-
-        if (angle == 0)
-            correction = 0;             // no adjustment.
-        else
-            correction = -angle;        // reverse sign of angle for correction.
-
-        correction = correction * gain;
-
-        return correction;
-    }
-
-    /**
-     * Rotate left or right the number of degrees. Does not support turning more than 180 degrees.
-     * @param degrees Degrees to turn, + is left - is right
-     */
-    private void rotate(int degrees, double power)
-    {
-        double  leftPower, rightPower;
-
-        // restart imu movement tracking.
-        resetAngle();
-
-        // getAngle() returns + when rotating counter clockwise (left) and - when rotating
-        // clockwise (right).
-
-        if (degrees < 0)
-        {   // turn right.
-            leftPower = power;
-            rightPower = -power;
-        }
-        else if (degrees > 0)
-        {   // turn left.
-            leftPower = -power;
-            rightPower = power;
-        }
-        else return;
-
-        // set power to rotate.
-        robot.drive.frontLeft.setPower(leftPower);
-        robot.drive.rearLeft.setPower(leftPower);
-        robot.drive.frontRight.setPower(rightPower);
-        robot.drive.rearRight.setPower(rightPower);
-
-        // rotate until turn is completed.
-        if (degrees < 0)
-        {
-            // On right turn we have to get off zero first.
-            while (opModeIsActive() && getAngle() == 0) {}
-
-            while (opModeIsActive() && getAngle() > degrees) {}
-        }
-        else    // left turn.
-            while (opModeIsActive() && getAngle() < degrees) {}
-
-        // turn the motors off.
-        robot.drive.setDrivePower(0);
-
-        // wait for rotation to stop.
-        sleep(1000);
-
-        // reset angle tracking on new heading.
-        resetAngle();
-    }
 }
