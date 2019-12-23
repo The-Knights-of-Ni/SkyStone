@@ -33,6 +33,7 @@ public class imuTest extends LinearOpMode {
         imu = hardwareMap.get(BNO055IMU.class, "imu");
         imu.initialize(parameters);
         if (opModeIsActive()) {
+telemetry.addData(String.format("Test: "), "%.03f", imu.getPosition().x);
             while(opModeIsActive()) {
                 if (imu != null) {
                     telemetry.addData(String.format("Position(x): "), "%.03f", imu.getPosition().x);
