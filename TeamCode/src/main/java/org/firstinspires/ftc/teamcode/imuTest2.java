@@ -13,6 +13,7 @@ package org.firstinspires.ftc.teamcode;
         import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
         import com.qualcomm.robotcore.hardware.DcMotor;
         import com.qualcomm.robotcore.hardware.TouchSensor;
+        import com.qualcomm.robotcore.util.ElapsedTime;
 
         import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
         import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
@@ -25,27 +26,34 @@ package org.firstinspires.ftc.teamcode;
 //@Disabled
 public class imuTest2 extends LinearOpMode
 {
-    DcMotor                 leftMotor, rightMotor;
-    TouchSensor             touch;
-    BNO055IMU               imu;
+    private Robot robot;
+    private BNO055IMU imu;
     Orientation             lastAngles = new Orientation();
     double                  globalAngle, power = .30, correction;
     boolean                 aButton, bButton, touched;
+    private void initOpMode() {
+        //Initialize DC motor objects
+        ElapsedTime timer = new ElapsedTime();
+        robot = new Robot(this, timer);
+
+    }
 
     // called when init button is  pressed.
     @Override
     public void runOpMode() throws InterruptedException
     {
-        leftMotor = hardwareMap.dcMotor.get("left_motor");
-        rightMotor = hardwareMap.dcMotor.get("right_motor");
+        //leftMotor = hardwareMap.dcMotor.get("left_motor");
+        //rightMotor = hardwareMap.dcMotor.get("right_motor");
 
-        leftMotor.setDirection(DcMotor.Direction.REVERSE);
+        //leftMotor.setDirection(DcMotor.Direction.REVERSE);
+        robot.frontLeftDriveMotor.setDirection(DcMotor.Direction.REVERSE);
+        robot.rearLeftDriveMotor.setDirection(DcMotor.Direction.REVERSE);
 
-        leftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        rightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        // get a reference to touch sensor.
-        touch = hardwareMap.touchSensor.get("touch_sensor");
+        robot.frontLeftDriveMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        robot.frontRightDriveMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        robot.rearLeftDriveMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        robot.rearRightDriveMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
 
@@ -96,28 +104,25 @@ public class imuTest2 extends LinearOpMode
             telemetry.addData("3 correction", correction);
             telemetry.update();
 
-            leftMotor.setPower(power - correction);
-            rightMotor.setPower(power + correction);
+            robot.drive.frontLeft.setPower(power - correction);
+            robot.drive.rearLeft.setPower(power - correction);
+            robot.drive.frontRight.setPower(power + correction);
+            robot.drive.rearRight.setPower(power + correction);
 
             // We record the sensor values because we will test them in more than
             // one place with time passing between those places. See the lesson on
             // Timing Considerations to know why.
 
-            aButton = gamepad1.a;
-            bButton = gamepad1.b;
-            touched = touch.isPressed();
 
             if (touched || aButton || bButton)
             {
                 // backup.
-                leftMotor.setPower(power);
-                rightMotor.setPower(power);
+                robot.drive.setDrivePower(power);
 
                 sleep(500);
 
                 // stop.
-                leftMotor.setPower(0);
-                rightMotor.setPower(0);
+                robot.drive.setDrivePower(0);
 
                 if (touched || aButton) rotate(-90, power);
                 //if (touched || aButton) rotate(-90, power);
@@ -129,8 +134,10 @@ public class imuTest2 extends LinearOpMode
         }
 
         // turn the motors off.
-        rightMotor.setPower(0);
-        leftMotor.setPower(0);
+        robot.frontLeftDriveMotor.setPower(0);
+        robot.frontRightDriveMotor.setPower(0);
+        robot.rearLeftDriveMotor.setPower(0);
+        robot.rearRightDriveMotor.setPower(0);
     }
 
     /**
@@ -220,8 +227,10 @@ public class imuTest2 extends LinearOpMode
         else return;
 
         // set power to rotate.
-        leftMotor.setPower(leftPower);
-        rightMotor.setPower(rightPower);
+        robot.drive.frontLeft.setPower(leftPower);
+        robot.drive.rearLeft.setPower(leftPower);
+        robot.drive.frontRight.setPower(rightPower);
+        robot.drive.rearRight.setPower(rightPower);
 
         // rotate until turn is completed.
         if (degrees < 0)
@@ -235,8 +244,7 @@ public class imuTest2 extends LinearOpMode
             while (opModeIsActive() && getAngle() < degrees) {}
 
         // turn the motors off.
-        rightMotor.setPower(0);
-        leftMotor.setPower(0);
+        robot.drive.setDrivePower(0);
 
         // wait for rotation to stop.
         sleep(1000);

@@ -19,7 +19,7 @@ import org.firstinspires.ftc.teamcode.subsystems.Drive;
 public class Robot {
     public String name;
     private HardwareMap hardwareMap;
-    private ElapsedTime timer;
+    public ElapsedTime timer;
 
     //DC Motors
     public DcMotorEx frontLeftDriveMotor;

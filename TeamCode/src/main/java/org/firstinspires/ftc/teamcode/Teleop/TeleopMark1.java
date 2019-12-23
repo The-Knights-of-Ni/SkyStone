@@ -90,6 +90,9 @@ public class TeleopMark1 extends LinearOpMode {
         //Initialize DC motor objects
         ElapsedTime timer = new ElapsedTime();
         robot = new Robot(this, timer);
+        robot.xRailWinch.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.xRailWinch.setTargetPosition(0);
+        robot.xRailWinch.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 //        robot.init();
 //        lrDrive = hardwareMap.dcMotor.get("lrDrive");
 //        lfDrive = hardwareMap.dcMotor.get("lfDrive");
