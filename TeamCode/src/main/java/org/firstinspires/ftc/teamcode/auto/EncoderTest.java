@@ -15,13 +15,17 @@ import org.firstinspires.ftc.teamcode.Robot;
 public class EncoderTest extends LinearOpMode {
     private static final int targetPosition = 315;
     private static final double maxPower = 0;
+    Robot robot;
 
-    public void runOpMode() {
+    public void initOpMode(){
         ElapsedTime timer = new ElapsedTime();
         Robot robot = new Robot(this, timer);
         robot.init();
+    }
+    public void runOpMode() {
+        initOpMode();
         waitForStart();
-        timer.reset();
+        robot.timer.reset();
         robot.drive.setRunMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.drive.setRunMode(DcMotor.RunMode.RUN_TO_POSITION);
 
