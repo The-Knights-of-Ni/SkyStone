@@ -20,7 +20,6 @@ public class EncoderTest extends LinearOpMode {
     public void initOpMode(){
         ElapsedTime timer = new ElapsedTime();
         Robot robot = new Robot(this, timer);
-        robot.init();
     }
     public void runOpMode() {
         initOpMode();
