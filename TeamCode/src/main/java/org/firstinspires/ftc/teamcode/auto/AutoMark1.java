@@ -32,7 +32,7 @@ import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocaliz
 
 @Autonomous(name = "AutoMark1")
 public class AutoMark1 extends LinearOpMode {
-    private static final String TAG = "AutoBlueCrater";
+    private static final String TAG = "AutoMark1";
 
     private Robot robot;
     private ElapsedTime timer;
@@ -64,26 +64,6 @@ public class AutoMark1 extends LinearOpMode {
     // Field parameters
     private static final double     FIELD_X    = 72.0;
     private static final double     FIELD_Y    = 72.0;
-    private static final double     DEPOT_X    = -FIELD_X + 22.0;
-    private static final double     DEPOT_Y    = FIELD_Y - 22.0;
-    private static final double     CRATER_X    = FIELD_X - 25.0;
-    private static final double     CRATER_Y    = FIELD_Y - 25.0;
-
-    // mineral position (left lander) (Crater side)
-    private static final double     MINERAL1_X    = FIELD_X - 45.5;
-    private static final double     MINERAL1_Y    = FIELD_Y - 25.0;
-    private static final double     MINERAL2_X    = FIELD_X - 35.25;
-    private static final double     MINERAL2_Y    = FIELD_Y - 35.25;
-    private static final double     MINERAL3_X    = FIELD_X - 25.0;
-    private static final double     MINERAL3_Y    = FIELD_Y - 45.5;
-
-//    // mineral position (right lander) (Depot side)
-//    private static final double     MINERAL1_X    = -FIELD_X + 25.0;
-//    private static final double     MINERAL1_Y    = FIELD_Y - 45.5;
-//    private static final double     MINERAL2_X    = -FIELD_X + 35.25;
-//    private static final double     MINERAL2_Y    = FIELD_Y - 35.25;
-//    private static final double     MINERAL3_X    = -FIELD_X + 45.5;
-//    private static final double     MINERAL3_Y    = FIELD_Y - 25.0;
 
     // Robot initial position (left lander) (Crater side)
     private static final double     ROBOT_INIT_POS_X    = 15.0;
