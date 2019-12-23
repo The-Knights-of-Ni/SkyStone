@@ -56,7 +56,7 @@ import org.firstinspires.ftc.teamcode.Robot;
  * is explained below.
  */
 
-@Autonomous(name = "Auto", group = "Concept")
+@Autonomous(name = "Auto_Parking", group = "Concept")
 
 public class Auto_Parking extends LinearOpMode {
     private static final String TFOD_MODEL_ASSET = "Skystone.tflite";
