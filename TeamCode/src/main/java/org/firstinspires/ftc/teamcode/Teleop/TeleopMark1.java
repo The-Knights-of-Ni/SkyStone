@@ -52,7 +52,7 @@ public class TeleopMark1 extends LinearOpMode {
 
 
             double[] motorPowers = calcMotorPowers(leftStickX, leftStickY, rightStickX);
-            robot.rearLeftDriveMotor.setPower(-motorPowers[0]);
+            robot.rearLeftDriveMotor.setPower(motorPowers[0]);
             robot.frontLeftDriveMotor.setPower(motorPowers[1]);
             robot.rearRightDriveMotor.setPower(motorPowers[2]);
             robot.frontRightDriveMotor.setPower(motorPowers[3]);
