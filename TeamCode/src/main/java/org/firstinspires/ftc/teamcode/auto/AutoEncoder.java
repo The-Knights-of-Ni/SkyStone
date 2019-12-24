@@ -45,7 +45,7 @@ import java.util.List;
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-@Autonomous(name = "Auto", group = "Concept")
+@Autonomous(name = "AutoEncoder", group = "Concept")
 
 public class AutoEncoder extends LinearOpMode {
     private static final String LABEL_FIRST_ELEMENT = "Stone";
