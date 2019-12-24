@@ -12,6 +12,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.Position;
+import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
 import org.firstinspires.ftc.teamcode.Robot;
 
 @TeleOp(name = "IMUTeleTest")
@@ -19,8 +20,9 @@ public class IMUTeleOPTest extends LinearOpMode{
     private Robot robot;
     private BNO055IMU imu;
     Orientation lastAngles = new Orientation();
+    Velocity velocity = new Velocity();
     Position position = new Position();
-    double                  globalAngle, power = .30;
+    double globalAngle, power = .30;
     @Override
     public void runOpMode() throws InterruptedException {
         initOpMode();
@@ -65,7 +67,9 @@ public class IMUTeleOPTest extends LinearOpMode{
 
         sleep(1000);
         waitForStart();
+        imu.startAccelerationIntegration(position, velocity, 1);
         while(opModeIsActive()) {
+
             //Get gamepad inputs
             double leftStickX = gamepad1.left_stick_x;
             double leftStickY = -gamepad1.left_stick_y;
@@ -130,6 +134,7 @@ public class IMUTeleOPTest extends LinearOpMode{
 
             resetAngle();
             updatePosition();
+            updateVelocity();
         }
     }
     private void initOpMode() {
@@ -190,6 +195,11 @@ public class IMUTeleOPTest extends LinearOpMode{
     public void updatePosition()
     {
         position = imu.getPosition();
+    }
+
+    public void updateVelocity()
+    {
+        velocity = imu.getVelocity();
     }
 
     /**
