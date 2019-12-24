@@ -22,8 +22,6 @@ public class IMUTeleOPTest extends LinearOpMode{
     @Override
     public void runOpMode() throws InterruptedException {
         initOpMode();
-        robot.frontLeftDriveMotor.setDirection(DcMotor.Direction.REVERSE);
-        robot.rearLeftDriveMotor.setDirection(DcMotor.Direction.REVERSE);
 
 
         robot.frontLeftDriveMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -68,7 +66,7 @@ public class IMUTeleOPTest extends LinearOpMode{
         while(opModeIsActive()) {
             //Get gamepad inputs
             double leftStickX = gamepad1.left_stick_x;
-            double leftStickY = gamepad1.left_stick_y;
+            double leftStickY = -gamepad1.left_stick_y;
             double rightStickX = gamepad1.right_stick_x;
             boolean aButton = gamepad1.a;
             boolean bButton = gamepad1.b;
