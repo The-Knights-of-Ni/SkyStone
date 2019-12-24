@@ -66,7 +66,7 @@ public class TeleopMark1 extends LinearOpMode {
             if((rightStickY2 > 0.1) && (rightStickY2 < 0.5)){
                 robot.xRailWinch.setPower(0.35);
             }
-            else if(){
+            else if((rightStickY2 >= 0.5) && (rightStickY2 <= 1)){
                 robot.xRailWinch.setPower(0.7);
             }
 
