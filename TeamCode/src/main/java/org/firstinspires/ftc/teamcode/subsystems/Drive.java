@@ -26,6 +26,11 @@ public class Drive extends Subsystem {
     private static final double     COUNTS_CORRECTION_X     = 0.939;
     private static final double     COUNTS_CORRECTION_Y     = 0.646;
 
+    private static final double     WINCH_DIAMETER_INCH     = 1.244;  //inch original measurement
+    private static final double     WINCH_DIAMETER_MM       = WINCH_DIAMETER_INCH * 2.54 * 10.0; //milimeters
+    private static final double     WINCH_RADIUS_MM         = WINCH_DIAMETER_MM / 2.0;
+
+
     public Drive(DcMotorEx frontLeft, DcMotorEx frontRight, DcMotorEx rearLeft, DcMotorEx rearRight, BNO055IMU imu, ElapsedTime timer) {
         this.frontLeft = frontLeft;
         this.frontRight = frontRight;
