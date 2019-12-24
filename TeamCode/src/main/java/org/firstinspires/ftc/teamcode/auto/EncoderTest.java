@@ -57,10 +57,13 @@ public class EncoderTest extends LinearOpMode {
 //            telemetry.update();
 //        }
         robot.xRailWinch.setPower(0.5);
-        robot.xRailWinch.setTargetPosition(500);
+        robot.xRailWinch.setTargetPosition(8400);
         while(robot.xRailWinch.isBusy()){
             telemetry.addData("Winch", robot.xRailWinch.getCurrentPosition());
             telemetry.update();
         }
+        telemetry.addData("Winch", robot.xRailWinch.getCurrentPosition());
+        telemetry.update();
+        sleep(10000);
     }
 }
