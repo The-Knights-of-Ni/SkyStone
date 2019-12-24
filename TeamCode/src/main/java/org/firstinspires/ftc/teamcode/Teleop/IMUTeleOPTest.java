@@ -11,6 +11,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
+import org.firstinspires.ftc.robotcore.external.navigation.Position;
 import org.firstinspires.ftc.teamcode.Robot;
 
 @TeleOp(name = "IMUTeleTest")
@@ -18,6 +19,7 @@ public class IMUTeleOPTest extends LinearOpMode{
     private Robot robot;
     private BNO055IMU imu;
     Orientation lastAngles = new Orientation();
+    Position position = new Position();
     double                  globalAngle, power = .30;
     @Override
     public void runOpMode() throws InterruptedException {
@@ -113,7 +115,7 @@ public class IMUTeleOPTest extends LinearOpMode{
             }
 
             telemetry.addData("1 imu heading", lastAngles.firstAngle);
-            telemetry.addData("2 global heading", globalAngle);
+            telemetry.addData("2 position", position.toString());
 
             telemetry.addData("Left Stick Y2", leftStickY2);
             telemetry.addData("Right Stick Y2", rightStickY2);
@@ -127,6 +129,7 @@ public class IMUTeleOPTest extends LinearOpMode{
             telemetry.update();
 
             resetAngle();
+            updatePosition();
         }
     }
     private void initOpMode() {
@@ -182,6 +185,11 @@ public class IMUTeleOPTest extends LinearOpMode{
         lastAngles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
 
         globalAngle = 0;
+    }
+
+    public void updatePosition()
+    {
+        position = imu.getPosition();
     }
 
     /**
