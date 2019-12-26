@@ -42,14 +42,14 @@ public class TeleopMark1 extends LinearOpMode {
     boolean bumperRight2;
 
     int winchCurrentPosition = 0;
-    int winchTargetPosition;
+    int winchTargetPosition = 0;
     double timePre;
     double timeCurrent;
     double leftStickY2Pre;
     double leftStickY2Current;
     double winchSpeed;
     double deltaT;
-    double winchDeltaD;
+    double winchIncrement = 0;
     ElapsedTime timer;
 
 
@@ -105,16 +105,17 @@ public class TeleopMark1 extends LinearOpMode {
 
             deltaT = timeCurrent - timePre;
             if(leftStickY2 >= 0.1){
-                winchSpeed = (leftStickY2 - 0.1) * (robot.drive.getWinchMaxSpeed() / 0.9);
+                winchSpeed = (leftStickY2 - 0.1) * (robot.drive.getWinchMaxSpeedTICKpSec() / 0.9);
             }
             else if(leftStickY2  <= -0.1){
-                winchSpeed = (leftStickY2 + 0.1) * (robot.drive.getWinchMaxSpeed() / 0.9);
+                winchSpeed = (leftStickY2 + 0.1) * (robot.drive.getWinchMaxSpeedTICKpSec() / 0.9);
             }
             else{
                 winchSpeed = 0.0;
             }
             winchCurrentPosition = robot.xRailWinch.getCurrentPosition();
-            winchTargetPosition = (int) (winchCurrentPosition + (winchSpeed * deltaT));
+            winchIncrement = (winchSpeed * deltaT) / Math.pow(10.0,9);
+            winchTargetPosition = (int) (winchCurrentPosition + winchIncrement);
             if((winchTargetPosition <= 8410) && (winchTargetPosition >= 0)){
                 robot.xRailWinch.setTargetPosition(winchTargetPosition);
             }
@@ -124,6 +125,9 @@ public class TeleopMark1 extends LinearOpMode {
             telemetry.addData("Right Stick Y2", rightStickY2);
             telemetry.addData("Right Stick X", rightStickX);
             telemetry.addData("deltaT", deltaT);
+            telemetry.addData("currentPos", winchCurrentPosition);
+            telemetry.addData("targetPos", winchTargetPosition);
+            telemetry.addData("increment", winchIncrement);
 
 //            telemetry.addData("", "");
 //            telemetry.addData("Left Rear Power", robot.rearLeftDriveMotor.getPower());
@@ -141,8 +145,8 @@ public class TeleopMark1 extends LinearOpMode {
         robot.xRailWinch.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.xRailWinch.setTargetPosition(0);
         robot.xRailWinch.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        timeCurrent = timer.milliseconds();
-        timePre = timer.nanoseconds();
+        timeCurrent = timer.nanoseconds();
+        timePre = timeCurrent;
 //        robot.init();
 //        lrDrive = hardwareMap.dcMotor.get("lrDrive");
 //        lfDrive = hardwareMap.dcMotor.get("lfDrive");
