@@ -42,7 +42,10 @@ public class TeleopMark1 extends LinearOpMode {
     boolean bumperRight2;
 
     int winchCurrentPosition = 0;
-    int winchTargetPosition = 0;
+    int winchTargetPositionCurrent = 0;
+    int winchTargetPositionPre = 0;
+    int winchPosError = 200;
+
     double timePre;
     double timeCurrent;
     double leftStickY2Pre;
@@ -96,10 +99,10 @@ public class TeleopMark1 extends LinearOpMode {
 
             //930mm, 8400 encoder count
             if((Math.abs(leftStickY2) < 0.5)){
-                robot.xRailWinch.setPower(0.35);
+                robot.xRailWinch.setPower(0.5);
             }
             else{
-                robot.xRailWinch.setPower(0.7);
+                robot.xRailWinch.setPower(1.0);
             }
 
 
@@ -115,9 +118,11 @@ public class TeleopMark1 extends LinearOpMode {
             }
             winchCurrentPosition = robot.xRailWinch.getCurrentPosition();
             winchIncrement = (winchSpeed * deltaT) / Math.pow(10.0,9);
-            winchTargetPosition = (int) (winchCurrentPosition + winchIncrement);
-            if((winchTargetPosition <= 8410) && (winchTargetPosition >= 0)){
-                robot.xRailWinch.setTargetPosition(winchTargetPosition);
+            winchTargetPositionCurrent = (int) (winchTargetPositionPre + winchIncrement);
+            if((winchTargetPositionCurrent <= 8410) && (winchTargetPositionCurrent >= 0)
+                    && ( Math.abs(winchTargetPositionCurrent - winchCurrentPosition) < winchPosError)){
+                robot.xRailWinch.setTargetPosition(winchTargetPositionCurrent);
+                winchTargetPositionPre = winchTargetPositionCurrent;
             }
 
 
@@ -126,7 +131,7 @@ public class TeleopMark1 extends LinearOpMode {
             telemetry.addData("Right Stick X", rightStickX);
             telemetry.addData("deltaT", deltaT);
             telemetry.addData("currentPos", winchCurrentPosition);
-            telemetry.addData("targetPos", winchTargetPosition);
+            telemetry.addData("targetPos", winchTargetPositionCurrent);
             telemetry.addData("increment", winchIncrement);
 
 //            telemetry.addData("", "");
