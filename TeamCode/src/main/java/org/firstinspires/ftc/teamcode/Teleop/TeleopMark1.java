@@ -57,6 +57,7 @@ public class TeleopMark1 extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         initOpMode();
         waitForStart();
+        telemetry.clearAll();
         while(opModeIsActive()) {
             //Get gamepad inputs
             leftStickX = gamepad1.left_stick_x;
@@ -138,8 +139,8 @@ public class TeleopMark1 extends LinearOpMode {
         timer = new ElapsedTime();
         robot = new Robot(this, timer);
         robot.xRailWinch.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        robot.xRailWinch.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         robot.xRailWinch.setTargetPosition(0);
+        robot.xRailWinch.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         timeCurrent = timer.milliseconds();
         timePre = timer.nanoseconds();
 //        robot.init();
@@ -153,6 +154,8 @@ public class TeleopMark1 extends LinearOpMode {
 //        lfDrive.setDirection(DcMotor.Direction.REVERSE);
 //        rrDrive.setDirection(DcMotor.Direction.FORWARD);
 //        rfDrive.setDirection(DcMotor.Direction.FORWARD);
+        telemetry.addData("Wait for start", "");
+        telemetry.update();
     }
 
     private double[] calcMotorPowers(double leftStickX, double leftStickY, double rightStickX) {
