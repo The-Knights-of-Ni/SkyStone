@@ -18,28 +18,28 @@ public class TeleopMark1 extends LinearOpMode {
     //Declare DC motor objects
     private Robot robot;
 
-    double leftStickX = gamepad1.left_stick_x;
-    double leftStickY = -gamepad1.left_stick_y;
-    double rightStickX = gamepad1.right_stick_x;
-    boolean aButton = gamepad1.a;
-    boolean bButton = gamepad1.b;
-    boolean dPadUp = gamepad1.dpad_up;
-    boolean dPadDown = gamepad1.dpad_down;
-    boolean dPadLeft = gamepad1.dpad_left;
-    boolean dPadRight = gamepad1.dpad_right;
+    double leftStickX;
+    double leftStickY;
+    double rightStickX;
+    boolean aButton;
+    boolean bButton;
+    boolean dPadUp;
+    boolean dPadDown;
+    boolean dPadLeft;
+    boolean dPadRight;
 
-    double leftStickX2 = gamepad2.left_stick_x;
-    double leftStickY2 = -gamepad2.left_stick_y;
-    double rightStickX2 = gamepad2.right_stick_x;
-    double rightStickY2 = gamepad2.right_stick_y;
-    boolean aButton2 = gamepad2.a;
-    boolean bButton2 = gamepad2.b;
-    boolean dPadUp2 = gamepad2.dpad_up;
-    boolean dPadDown2 = gamepad2.dpad_down;
-    boolean dPadLeft2 = gamepad2.dpad_left;
-    boolean dPadRight2 = gamepad2.dpad_right;
-    boolean bumperLeft2 = gamepad2.left_bumper;
-    boolean bumperRight2 = gamepad2.right_bumper;
+    double leftStickX2;
+    double leftStickY2;
+    double rightStickX2;
+    double rightStickY2;
+    boolean aButton2;
+    boolean bButton2;
+    boolean dPadUp2;
+    boolean dPadDown2;
+    boolean dPadLeft2;
+    boolean dPadRight2;
+    boolean bumperLeft2;
+    boolean bumperRight2;
 
     int winchCurrentPosition = 0;
     int winchTargetPosition;
