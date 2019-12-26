@@ -31,6 +31,7 @@ public class Drive extends Subsystem {
     private static final double     WINCH_RADIUS_MM         = WINCH_DIAMETER_MM / 2.0;
     private static final double     WINCH_CIRCUMFERENCE_MM  = WINCH_RADIUS_MM * 2.0 * Math.PI;
     private static final double     MOTOR_TICK_PER_REV_40   = 1120.0;
+    public static final double      WINCH_MAX_SPEED         = 160.0 * WINCH_DIAMETER_MM * Math.PI;
 
 
     public Drive(DcMotorEx frontLeft, DcMotorEx frontRight, DcMotorEx rearLeft, DcMotorEx rearRight, BNO055IMU imu, ElapsedTime timer) {
@@ -41,6 +42,10 @@ public class Drive extends Subsystem {
         this.imu = imu;
         this.timer = timer;
         setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+    }
+
+    public double getWinchMaxSpeed(){
+        return WINCH_MAX_SPEED;
     }
 
     /**
