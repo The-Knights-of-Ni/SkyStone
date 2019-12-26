@@ -44,7 +44,7 @@ public class TeleopMark1 extends LinearOpMode {
     int winchCurrentPosition = 0;
     int winchTargetPositionCurrent = 0;
     int winchTargetPositionPre = 0;
-    int winchPosError = 200;
+    int winchPosError = 400;
 
     double timePre;
     double timeCurrent;
@@ -98,13 +98,18 @@ public class TeleopMark1 extends LinearOpMode {
             robot.armTilt.setPower(Math.pow(rightStickY2, 1.0));
 
             //930mm, 8400 encoder count
-            if((Math.abs(leftStickY2) < 0.5)){
-                robot.xRailWinch.setPower(0.5);
-            }
-            else{
+            if((leftStickY2 > 0.5)){
                 robot.xRailWinch.setPower(1.0);
             }
-
+            else if(leftStickY2 > 0.1){
+                robot.xRailWinch.setPower(0.5);
+            }
+            else if(leftStickY2 > -0.5){
+                robot.xRailWinch.setPower(0.3);
+            }
+            else{
+                robot.xRailWinch.setPower(0.7);
+            }
 
             deltaT = timeCurrent - timePre;
             if(leftStickY2 >= 0.1){
