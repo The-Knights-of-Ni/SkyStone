@@ -139,16 +139,16 @@ public class TeleopMark1 extends LinearOpMode {
 
             //Tilt
             if((rightStickY2 > 0.5)){
-                robot.xRailWinch.setPower(1.0);
+                robot.armTilt.setPower(1.0);
             }
             else if(rightStickY2 > 0.1){
-                robot.xRailWinch.setPower(0.5);
+                robot.armTilt.setPower(0.5);
             }
             else if(rightStickY2 > -0.5){
-                robot.xRailWinch.setPower(0.3);
+                robot.armTilt.setPower(0.3);
             }
             else{
-                robot.xRailWinch.setPower(0.7);
+                robot.armTilt.setPower(0.7);
             }
 
             if(rightStickY2 >= 0.1){
@@ -163,7 +163,7 @@ public class TeleopMark1 extends LinearOpMode {
             tiltCurrentPosition = robot.armTilt.getCurrentPosition();
             tiltIncrement = (tiltSpeed * deltaT) / Math.pow(10.0,9);
             tiltTargetPositionCurrent = (int) (tiltTargetPositionPre + tiltIncrement);
-            if((tiltTargetPositionCurrent <= winchMax) && (tiltTargetPositionCurrent >= 0)
+            if((tiltTargetPositionCurrent <= tiltMax) && (tiltTargetPositionCurrent >= 0)
                     && ( Math.abs(tiltTargetPositionCurrent - tiltCurrentPosition) < tiltPosError)){
                 robot.armTilt.setTargetPosition(tiltTargetPositionCurrent);
                 tiltTargetPositionPre = tiltTargetPositionCurrent;
@@ -176,6 +176,7 @@ public class TeleopMark1 extends LinearOpMode {
             telemetry.addData("currentPosWinch", winchCurrentPosition);
             telemetry.addData("targetPosWinch", winchTargetPositionCurrent);
             telemetry.addData("increment", winchIncrement);
+
 
 //            telemetry.addData("", "");
 //            telemetry.addData("Left Rear Power", robot.rearLeftDriveMotor.getPower());
