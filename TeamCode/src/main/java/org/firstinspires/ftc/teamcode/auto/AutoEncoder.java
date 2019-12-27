@@ -97,7 +97,6 @@ public class AutoEncoder extends LinearOpMode {
         driveFL = hardwareMap.dcMotor.get("fl");
         driveFL.setDirection(DcMotorSimple.Direction.REVERSE);
         driveFL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        driveFL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         driveFR = hardwareMap.dcMotor.get("fr");
         driveFR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -105,7 +104,6 @@ public class AutoEncoder extends LinearOpMode {
         driveBL = hardwareMap.dcMotor.get("bl");
         driveBL.setDirection(DcMotorSimple.Direction.REVERSE);
         driveBL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        driveBL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         driveBR = hardwareMap.dcMotor.get("br");
         driveBR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -119,6 +117,9 @@ public class AutoEncoder extends LinearOpMode {
 
         driveFL.setTargetPosition(500);
         driveBL.setTargetPosition(500);
+        driveFL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        driveBL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
 
 //        driveFL.setMode(DcMotor.RunMode.RUN_USING_ENCODER); // find what out this is doing
 //        driveFR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
