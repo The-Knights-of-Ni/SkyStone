@@ -52,7 +52,7 @@ public class Drive extends Subsystem {
         return WINCH_MAX_SPEED_MM_PER_SEC;
     }
 
-    public double getWinchMaxSpeedTICKpSec(){
+    public double getWinchMaxSpeedTickPerSec(){
         return WINCH_MAX_SPEED_TICK_PER_SEC;
     }
 

@@ -120,10 +120,10 @@ public class TeleopMark1 extends LinearOpMode {
             }
 
             if(leftStickY2 >= 0.1){
-                winchSpeed = (leftStickY2 - 0.1) * (robot.drive.getWinchMaxSpeedTICKpSec() / 0.9);
+                winchSpeed = (leftStickY2 - 0.1) * (robot.drive.getWinchMaxSpeedTickPerSec() / 0.9);
             }
             else if(leftStickY2  <= -0.1){
-                winchSpeed = (leftStickY2 + 0.1) * (robot.drive.getWinchMaxSpeedTICKpSec() / 0.9);
+                winchSpeed = (leftStickY2 + 0.1) * (robot.drive.getWinchMaxSpeedTickPerSec() / 0.9);
             }
             else{
                 winchSpeed = 0.0;
@@ -152,10 +152,10 @@ public class TeleopMark1 extends LinearOpMode {
             }
 
             if(rightStickY2 >= 0.1){
-                tiltSpeed = (rightStickY2 - 0.1) * (robot.drive.getTiltMaxSpeedTICKpSec() / 0.9);
+                tiltSpeed = (rightStickY2 - 0.1) * (robot.drive.getTiltMaxSpeedTickPerSec() / 0.9);
             }
             else if(leftStickY2  <= -0.1){
-                tiltSpeed = (rightStickY2 + 0.1) * (robot.drive.getTiltMaxSpeedTICKpSec() / 0.9);
+                tiltSpeed = (rightStickY2 + 0.1) * (robot.drive.getTiltMaxSpeedTickPerSec() / 0.9);
             }
             else{
                 tiltSpeed = 0.0;
