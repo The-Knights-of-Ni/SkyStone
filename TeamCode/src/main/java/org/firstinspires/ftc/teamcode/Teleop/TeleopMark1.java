@@ -139,16 +139,16 @@ public class TeleopMark1 extends LinearOpMode {
 
             //Tilt
             if((rightStickY2 > 0.5)){
-                robot.xRailWinch.setPower(1.0);
+                robot.armTilt.setPower(1.0);
             }
             else if(rightStickY2 > 0.1){
-                robot.xRailWinch.setPower(0.5);
+                robot.armTilt.setPower(0.5);
             }
             else if(rightStickY2 > -0.5){
-                robot.xRailWinch.setPower(0.3);
+                robot.armTilt.setPower(0.3);
             }
             else{
-                robot.xRailWinch.setPower(0.7);
+                robot.armTilt.setPower(0.7);
             }
 
             if(rightStickY2 >= 0.1){
@@ -173,6 +173,7 @@ public class TeleopMark1 extends LinearOpMode {
             telemetry.addData("Right Stick Y2", rightStickY2);
             telemetry.addData("Right Stick X", rightStickX);
             telemetry.addData("deltaT", deltaT);
+
             telemetry.addData("currentPosWinch", winchCurrentPosition);
             telemetry.addData("targetPosWinch", winchTargetPositionCurrent);
             telemetry.addData("incrementWinch", winchIncrement);
@@ -180,6 +181,7 @@ public class TeleopMark1 extends LinearOpMode {
             telemetry.addData("currentPosTilt", tiltCurrentPosition);
             telemetry.addData("targetPosTilt", tiltTargetPositionCurrent);
             telemetry.addData("incrementTilt", tiltIncrement);
+
 
 //            telemetry.addData("", "");
 //            telemetry.addData("Left Rear Power", robot.rearLeftDriveMotor.getPower());
