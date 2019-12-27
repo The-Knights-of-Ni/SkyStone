@@ -109,11 +109,11 @@ public class driveByWire extends LinearOpMode {
 
                 robotAngle = imu.getAngularOrientation().firstAngle;
 
-                double r = 0.5;
+                double r = 0.3;
                 double goalAngle = 0;
                 double correctionAmount = robotAngle - goalAngle;
                 //double correctedAngle = goalAngle - correctionAmount;
-                if(correctionAmount != 0) {
+                if(Math.abs(correctionAmount) >= 10) {
                     double lrPower = r;
                     double lfPower = r;
                     double rrPower = r;
@@ -126,6 +126,7 @@ public class driveByWire extends LinearOpMode {
 
 
                 // Use gyro to drive in a straight line.
+                telemetry.addData("Correction Angle: ", correctionAmount );
                 telemetry.addData("Robot Angle: ", robotAngle );
                 telemetry.addData("1 imu heading", lastAngles.firstAngle);
                 telemetry.addData("2 global heading", globalAngle);
