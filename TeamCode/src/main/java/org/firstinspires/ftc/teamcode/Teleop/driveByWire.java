@@ -109,12 +109,19 @@ public class driveByWire extends LinearOpMode {
 
                 robotAngle = imu.getAngularOrientation().firstAngle;
 
-
-                double[] motorPowers = calcMotorPowers(leftStickX, leftStickY, rightStickX);
-                robot.rearLeftDriveMotor.setPower(motorPowers[0]);
-                robot.frontLeftDriveMotor.setPower(motorPowers[1]);
-                robot.rearRightDriveMotor.setPower(motorPowers[2]);
-                robot.frontRightDriveMotor.setPower(motorPowers[3]);
+                double r = 0.5;
+                double goalAngle = 0;
+                double correctionAmount = robotAngle - goalAngle;
+                //double correctedAngle = goalAngle - correctionAmount;
+                if(correctionAmount != 0);
+                double lrPower = r;
+                double lfPower = r;
+                double rrPower = -r;
+                double rfPower = -r;
+                robot.rearLeftDriveMotor.setPower(lrPower);
+                robot.frontLeftDriveMotor.setPower(lfPower);
+                robot.rearRightDriveMotor.setPower(rrPower);
+                robot.frontRightDriveMotor.setPower(rfPower);
 
                 // Use gyro to drive in a straight line.
                 telemetry.addData("Robot Angle: ", robotAngle );
@@ -123,10 +130,10 @@ public class driveByWire extends LinearOpMode {
                 //telemetry.addData("3 correction", correction);
                 telemetry.update();
 
-                robot.drive.frontLeft.setPower(power);
-                robot.drive.rearLeft.setPower(power);
-                robot.drive.frontRight.setPower(power);
-                robot.drive.rearRight.setPower(power);
+//                robot.drive.frontLeft.setPower(power);
+//                robot.drive.rearLeft.setPower(power);
+//                robot.drive.frontRight.setPower(power);
+//                robot.drive.rearRight.setPower(power);
                 resetAngle();
             }
 
@@ -147,47 +154,5 @@ public class driveByWire extends LinearOpMode {
             lastAngles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
 
             globalAngle = 0;
-        }
-
-        /**
-         * Get current cumulative angle rotation from last reset.
-         * @return Angle in degrees. + = left, - = right.
-         */
-        private double getAngle()
-        {
-            // We experimentally determined the Z axis is the axis we want to use for heading angle.
-            // We have to process the angle because the imu works in euler angles so the Z axis is
-            // returned as 0 to +180 or 0 to -180 rolling back to -179 or +179 when rotation passes
-            // 180 degrees. We detect this transition and track the total cumulative angle of rotation.
-
-            Orientation angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-
-            double deltaAngle = angles.firstAngle - lastAngles.firstAngle;
-
-            if (deltaAngle < -180)
-                deltaAngle += 360;
-            else if (deltaAngle > 180)
-                deltaAngle -= 360;
-
-            globalAngle += deltaAngle;
-
-            lastAngles = angles;
-
-            return globalAngle;
-        }
-
-        private double[] calcMotorPowers(double leftStickX, double leftStickY, double rightStickX) {
-            double r = Math.hypot(leftStickX, leftStickY);
-            double goalAngle = Math.atan2(leftStickY, leftStickX) - Math.PI / 4;
-            //double robotAngle = Math.toRadians(this.getAngle());
-            double correctionIntensity = 0;
-            double correctionAmount = Math.abs(robotAngle - goalAngle) + correctionIntensity;
-            double correctedAngle = goalAngle + correctionAmount;
-            double lrPower = r * Math.sin(correctedAngle) + rightStickX;
-            double lfPower = r * Math.cos(correctedAngle) + rightStickX;
-            double rrPower = r * Math.cos(correctedAngle) - rightStickX;
-            double rfPower = r * Math.sin(correctedAngle) - rightStickX;
-            return new double[]{lrPower, lfPower, rrPower, rfPower};
-
         }
 }
