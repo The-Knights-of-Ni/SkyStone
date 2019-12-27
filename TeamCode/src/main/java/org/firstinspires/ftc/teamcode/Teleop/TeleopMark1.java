@@ -163,7 +163,7 @@ public class TeleopMark1 extends LinearOpMode {
             tiltCurrentPosition = robot.armTilt.getCurrentPosition();
             tiltIncrement = (tiltSpeed * deltaT) / Math.pow(10.0,9);
             tiltTargetPositionCurrent = (int) (tiltTargetPositionPre + tiltIncrement);
-            if((tiltTargetPositionCurrent <= winchMax) && (tiltTargetPositionCurrent >= 0)
+            if((tiltTargetPositionCurrent <= tiltMax) && (tiltTargetPositionCurrent >= 0)
                     && ( Math.abs(tiltTargetPositionCurrent - tiltCurrentPosition) < tiltPosError)){
                 robot.armTilt.setTargetPosition(tiltTargetPositionCurrent);
                 tiltTargetPositionPre = tiltTargetPositionCurrent;
