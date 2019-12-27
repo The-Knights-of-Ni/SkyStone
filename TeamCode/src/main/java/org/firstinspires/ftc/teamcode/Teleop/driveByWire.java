@@ -113,15 +113,17 @@ public class driveByWire extends LinearOpMode {
                 double goalAngle = 0;
                 double correctionAmount = robotAngle - goalAngle;
                 //double correctedAngle = goalAngle - correctionAmount;
-                if(correctionAmount != 0);
-                double lrPower = r;
-                double lfPower = r;
-                double rrPower = -r;
-                double rfPower = -r;
-                robot.rearLeftDriveMotor.setPower(lrPower);
-                robot.frontLeftDriveMotor.setPower(lfPower);
-                robot.rearRightDriveMotor.setPower(rrPower);
-                robot.frontRightDriveMotor.setPower(rfPower);
+                if(correctionAmount != 0) {
+                    double lrPower = r;
+                    double lfPower = r;
+                    double rrPower = r;
+                    double rfPower = r;
+                    robot.rearLeftDriveMotor.setPower(lrPower);
+                    robot.frontLeftDriveMotor.setPower(lfPower);
+                    robot.rearRightDriveMotor.setPower(rrPower);
+                    robot.frontRightDriveMotor.setPower(rfPower);
+                }
+
 
                 // Use gyro to drive in a straight line.
                 telemetry.addData("Robot Angle: ", robotAngle );
