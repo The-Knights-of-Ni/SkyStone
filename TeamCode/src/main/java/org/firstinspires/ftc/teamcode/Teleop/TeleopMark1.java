@@ -46,13 +46,20 @@ public class TeleopMark1 extends LinearOpMode {
     int winchTargetPositionPre = 0;
     int winchPosError = 400;
 
+    int tiltCurrentPosition = 0;
+    int tiltTargetPositionCurrent = 0;
+    int tiltTargetPositionPre = 0;
+    int tiltPosError = 400;
+
     double timePre;
     double timeCurrent;
     double leftStickY2Pre;
     double leftStickY2Current;
     double winchSpeed;
+    double tiltSpeed;
     double deltaT;
     double winchIncrement = 0;
+    double tiltIncrement = 0;
     ElapsedTime timer;
 
 
@@ -95,8 +102,9 @@ public class TeleopMark1 extends LinearOpMode {
             robot.rearRightDriveMotor.setPower(motorPowers[2]);
             robot.frontRightDriveMotor.setPower(motorPowers[3]);
 
-            robot.armTilt.setPower(Math.pow(rightStickY2, 1.0));
+            deltaT = timeCurrent - timePre;
 
+            //Winch
             //930mm, 8400 encoder count
             if((leftStickY2 > 0.5)){
                 robot.xRailWinch.setPower(1.0);
@@ -107,11 +115,10 @@ public class TeleopMark1 extends LinearOpMode {
             else if(leftStickY2 > -0.5){
                 robot.xRailWinch.setPower(0.3);
             }
-            else{
+            else {
                 robot.xRailWinch.setPower(0.7);
             }
 
-            deltaT = timeCurrent - timePre;
             if(leftStickY2 >= 0.1){
                 winchSpeed = (leftStickY2 - 0.1) * (robot.drive.getWinchMaxSpeedTICKpSec() / 0.9);
             }
@@ -130,13 +137,44 @@ public class TeleopMark1 extends LinearOpMode {
                 winchTargetPositionPre = winchTargetPositionCurrent;
             }
 
+            //Tilt
+            if((rightStickY2 > 0.5)){
+                robot.xRailWinch.setPower(1.0);
+            }
+            else if(rightStickY2 > 0.1){
+                robot.xRailWinch.setPower(0.5);
+            }
+            else if(rightStickY2 > -0.5){
+                robot.xRailWinch.setPower(0.3);
+            }
+            else{
+                robot.xRailWinch.setPower(0.7);
+            }
+
+            if(rightStickY2 >= 0.1){
+                tiltSpeed = (rightStickY2 - 0.1) * (robot.drive.getTiltMaxSpeedTICKpSec() / 0.9);
+            }
+            else if(leftStickY2  <= -0.1){
+                tiltSpeed = (rightStickY2 + 0.1) * (robot.drive.getTiltMaxSpeedTICKpSec() / 0.9);
+            }
+            else{
+                tiltSpeed = 0.0;
+            }
+            tiltCurrentPosition = robot.armTilt.getCurrentPosition();
+            tiltIncrement = (tiltSpeed * deltaT) / Math.pow(10.0,9);
+            tiltTargetPositionCurrent = (int) (tiltTargetPositionPre + tiltIncrement);
+            if((tiltTargetPositionCurrent <= 8410) && (tiltTargetPositionCurrent >= 0)
+                    && ( Math.abs(tiltTargetPositionCurrent - tiltCurrentPosition) < tiltPosError)){
+                robot.armTilt.setTargetPosition(tiltTargetPositionCurrent);
+                tiltTargetPositionPre = tiltTargetPositionCurrent;
+            }
 
             telemetry.addData("Left Stick Y2", leftStickY2);
             telemetry.addData("Right Stick Y2", rightStickY2);
             telemetry.addData("Right Stick X", rightStickX);
             telemetry.addData("deltaT", deltaT);
-            telemetry.addData("currentPos", winchCurrentPosition);
-            telemetry.addData("targetPos", winchTargetPositionCurrent);
+            telemetry.addData("currentPosWinch", winchCurrentPosition);
+            telemetry.addData("targetPosWinch", winchTargetPositionCurrent);
             telemetry.addData("increment", winchIncrement);
 
 //            telemetry.addData("", "");
