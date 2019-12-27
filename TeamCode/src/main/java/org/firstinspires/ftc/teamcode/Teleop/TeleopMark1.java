@@ -175,7 +175,11 @@ public class TeleopMark1 extends LinearOpMode {
             telemetry.addData("deltaT", deltaT);
             telemetry.addData("currentPosWinch", winchCurrentPosition);
             telemetry.addData("targetPosWinch", winchTargetPositionCurrent);
-            telemetry.addData("increment", winchIncrement);
+            telemetry.addData("incrementWinch", winchIncrement);
+
+            telemetry.addData("currentPosTilt", tiltCurrentPosition);
+            telemetry.addData("targetPosTilt", tiltTargetPositionCurrent);
+            telemetry.addData("incrementTilt", tiltIncrement);
 
 //            telemetry.addData("", "");
 //            telemetry.addData("Left Rear Power", robot.rearLeftDriveMotor.getPower());
