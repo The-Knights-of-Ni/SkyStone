@@ -176,6 +176,9 @@ public class AutoEncoder extends LinearOpMode {
         driveFR.setPower(0);
 
 
+        driveBL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        driveBL.setTargetPosition(1440);
+
         while(driveBL.isBusy() && opModeIsActive()) {
             //Loop body can be empty
         }
@@ -189,6 +192,8 @@ public class AutoEncoder extends LinearOpMode {
         driveBR.setPower(0);
 
         driveForwardDistance(0.2,5000);
+        sleep(500);
+        driveForwardDistance(0.2,-5000);
     }
 
     public void driveForwardDistance(double power, int distance) {
