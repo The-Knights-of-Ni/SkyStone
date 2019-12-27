@@ -154,7 +154,7 @@ public class TeleopMark1 extends LinearOpMode {
             if(rightStickY2 >= 0.1){
                 tiltSpeed = (rightStickY2 - 0.1) * (robot.drive.getTiltMaxSpeedTickPerSec() / 0.9);
             }
-            else if(leftStickY2  <= -0.1){
+            else if(rightStickY2  <= -0.1){
                 tiltSpeed = (rightStickY2 + 0.1) * (robot.drive.getTiltMaxSpeedTickPerSec() / 0.9);
             }
             else{
