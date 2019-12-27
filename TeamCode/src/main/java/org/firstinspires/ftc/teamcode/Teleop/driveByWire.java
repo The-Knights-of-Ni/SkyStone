@@ -122,6 +122,11 @@ public class driveByWire extends LinearOpMode {
                     robot.frontLeftDriveMotor.setPower(lfPower);
                     robot.rearRightDriveMotor.setPower(rrPower);
                     robot.frontRightDriveMotor.setPower(rfPower);
+                } else {
+                    robot.rearLeftDriveMotor.setPower(0);
+                    robot.frontLeftDriveMotor.setPower(0);
+                    robot.rearRightDriveMotor.setPower(0);
+                    robot.frontRightDriveMotor.setPower(0);
                 }
 
 
