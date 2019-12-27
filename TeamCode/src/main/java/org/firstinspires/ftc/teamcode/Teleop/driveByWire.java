@@ -17,8 +17,10 @@ import org.firstinspires.ftc.teamcode.Robot;
 public class driveByWire extends LinearOpMode {
         private Robot robot;
         private BNO055IMU imu;
+        double robotAngle;
         Orientation lastAngles = new Orientation();
         double                  globalAngle, power = .30;
+
         private void initOpMode() {
             //Initialize DC motor objects
             ElapsedTime timer = new ElapsedTime();
@@ -115,7 +117,7 @@ public class driveByWire extends LinearOpMode {
                 robot.frontRightDriveMotor.setPower(motorPowers[3]);
 
                 // Use gyro to drive in a straight line.
-
+                telemetry.addData("Robot Angle: ", robotAngle );
                 telemetry.addData("1 imu heading", lastAngles.firstAngle);
                 telemetry.addData("2 global heading", globalAngle);
                 //telemetry.addData("3 correction", correction);
@@ -177,7 +179,7 @@ public class driveByWire extends LinearOpMode {
         private double[] calcMotorPowers(double leftStickX, double leftStickY, double rightStickX) {
             double r = Math.hypot(leftStickX, leftStickY);
             double goalAngle = Math.atan2(leftStickY, leftStickX) - Math.PI / 4;
-            double robotAngle = this.getAngle();
+            double robotAngle = Math.toRadians(this.getAngle());
             double correctionIntensity = 0;
             double correctionAmount = Math.abs(robotAngle - goalAngle) + correctionIntensity;
             double correctedAngle = goalAngle + correctionAmount;
@@ -187,5 +189,5 @@ public class driveByWire extends LinearOpMode {
             double rfPower = r * Math.sin(correctedAngle) - rightStickX;
             return new double[]{lrPower, lfPower, rrPower, rfPower};
 
-    }
+        }
 }
