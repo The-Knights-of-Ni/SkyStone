@@ -107,7 +107,7 @@ public class driveByWire extends LinearOpMode {
                 boolean bumperLeft2 = gamepad2.left_bumper;
                 boolean bumperRight2 = gamepad2.right_bumper;
 
-
+                robotAngle = imu.getAngularOrientation().firstAngle;
 
 
                 double[] motorPowers = calcMotorPowers(leftStickX, leftStickY, rightStickX);
@@ -179,7 +179,7 @@ public class driveByWire extends LinearOpMode {
         private double[] calcMotorPowers(double leftStickX, double leftStickY, double rightStickX) {
             double r = Math.hypot(leftStickX, leftStickY);
             double goalAngle = Math.atan2(leftStickY, leftStickX) - Math.PI / 4;
-            double robotAngle = Math.toRadians(this.getAngle());
+            //double robotAngle = Math.toRadians(this.getAngle());
             double correctionIntensity = 0;
             double correctionAmount = Math.abs(robotAngle - goalAngle) + correctionIntensity;
             double correctedAngle = goalAngle + correctionAmount;
