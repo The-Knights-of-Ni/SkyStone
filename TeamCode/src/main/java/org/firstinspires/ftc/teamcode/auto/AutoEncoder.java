@@ -191,9 +191,9 @@ public class AutoEncoder extends LinearOpMode {
         }
         driveBR.setPower(0);
 
-        driveForwardDistance(0.2,5000);
+        driveForwardDistance(0.2,1000);
         sleep(500);
-        driveForwardDistance(0.2,-5000);
+        driveForwardDistance(0.2,-1000);
     }
 
     public void driveForwardDistance(double power, int distance) {
