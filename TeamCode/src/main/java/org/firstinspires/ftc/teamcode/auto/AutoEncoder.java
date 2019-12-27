@@ -94,19 +94,21 @@ public class AutoEncoder extends LinearOpMode {
         // Declare motors
         skystone.activate();
 
-        driveFR = hardwareMap.dcMotor.get("fr");
-        driveFR.setDirection(DcMotorSimple.Direction.REVERSE);
-        driveFR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
         driveFL = hardwareMap.dcMotor.get("fl");
+        driveFL.setDirection(DcMotorSimple.Direction.REVERSE);
         driveFL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        driveFL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        driveBR = hardwareMap.dcMotor.get("br");
-        driveBR.setDirection(DcMotorSimple.Direction.REVERSE);
-        driveBR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        driveFR = hardwareMap.dcMotor.get("fr");
+        driveFR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         driveBL = hardwareMap.dcMotor.get("bl");
+        driveBL.setDirection(DcMotorSimple.Direction.REVERSE);
         driveBL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        driveBL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        driveBR = hardwareMap.dcMotor.get("br");
+        driveBR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         int TICKS_PER_REV = 1120;
 
@@ -115,22 +117,72 @@ public class AutoEncoder extends LinearOpMode {
         telemetry.update();
         waitForStart();
 
-        driveFL.setMode(DcMotor.RunMode.RUN_USING_ENCODER); // find what out this is doing
-        driveFR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        driveFL.setTargetPosition(500);
+        driveBL.setTargetPosition(500);
+
+//        driveFL.setMode(DcMotor.RunMode.RUN_USING_ENCODER); // find what out this is doing
+//        driveFR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         driveFL.setPower(0.2);
         driveFR.setPower(0.2);
         driveBL.setPower(0.2);
         driveBR.setPower(0.2);
 
-        while (opModeIsActive() && stoneListener.getRawPose() == null) {
+        while (opModeIsActive() && driveFL.isBusy())
+        {
             idle();
         }
+//        while (opModeIsActive() && stoneListener.getRawPose() == null) {
+//            idle();
+//        }
 
         driveFL.setPower(0);
         driveFR.setPower(0);
         driveBL.setPower(0);
         driveBR.setPower(0);
+
+        // wait 5 sec so you can observe the final encoder position.
+        resetStartTime();
+
+        while (opModeIsActive() && getRuntime() < 5)
+        {
+            telemetry.addData("encoder-fwd-end", driveFL.getCurrentPosition() + "  busy=" + driveFL.isBusy());
+            telemetry.update();
+            idle();
+        }
+
+        // Now back up to starting point. In this example instead of
+        // having the motor monitor the encoder, we will monitor the encoder ourselves.
+        driveFL.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        driveFL.setPower(-0.25);
+        driveFR.setPower(-0.25);
+        driveBL.setPower(-0.25);
+        driveBR.setPower(-0.25);
+
+        while (opModeIsActive() && driveFL.getCurrentPosition() > 0)
+        {
+            telemetry.addData("encoder-back", driveFL.getCurrentPosition());
+            telemetry.update();
+            idle();
+        }
+
+        // set motor power to zero to stop motors.
+
+        driveFL.setPower(0);
+        driveFR.setPower(0);
+        driveBL.setPower(0);
+        driveBR.setPower(0);
+
+        // wait 5 sec so you can observe the final encoder position.
+        resetStartTime();
+
+        while (opModeIsActive() && getRuntime() < 5)
+        {
+            telemetry.addData("encoder-back-end", driveFL.getCurrentPosition());
+            telemetry.update();
+            idle();
+        }
 
         // analyze skystone
 
