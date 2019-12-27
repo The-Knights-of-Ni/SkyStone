@@ -27,18 +27,14 @@ import static org.firstinspires.ftc.robotcore.external.navigation.AxesReference.
 import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer.CameraDirection.BACK;
 import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer.CameraDirection.FRONT;
 
-@Autonomous(name = "AutoBlueCrater")
+@Autonomous(name = "AutoMark2")
 public class AutoMark2 extends LinearOpMode {
-    private static final String TAG = "AutoBlueCrater";
+    private static final String TAG = "AutoMark2";
 
     private Robot robot;
     private ElapsedTime timer;
 
     private VuforiaLocalizer vuforia;
-
-    private static final String TFOD_MODEL_ASSET = "RoverRuckus.tflite";
-    private static final String LABEL_GOLD_MINERAL = "Gold Mineral";
-    private static final String LABEL_SILVER_MINERAL = "Silver Mineral";
 
     private static final double     DRIVE_SPEED             = 0.4;
     private static final double     TURN_SPEED              = 0.3;
