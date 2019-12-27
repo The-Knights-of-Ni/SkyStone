@@ -11,10 +11,6 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
-import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
-import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
-
-import java.util.List;
 
 /* Copyright (c) 2019 FIRST. All rights reserved.
  *
@@ -50,6 +46,8 @@ import java.util.List;
 public class AutoEncoder extends LinearOpMode {
     private static final String LABEL_FIRST_ELEMENT = "Stone";
     private static final String LABEL_SECOND_ELEMENT = "Skystone";
+
+    DcMotor driveFR, driveFL, driveBR, driveBL;
 
     /*
      * IMPORTANT: You need to obtain your own license key to use Vuforia. The string below with which
@@ -93,32 +91,46 @@ public class AutoEncoder extends LinearOpMode {
                 (VuforiaTrackableDefaultListener)stoneTarget.getListener();
 
         // Active the listeners
+        // Declare motors
         skystone.activate();
 
-        DcMotor driveR = hardwareMap.dcMotor.get("fr");
-        driveR.setDirection(DcMotorSimple.Direction.REVERSE);
-        driveR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        driveFR = hardwareMap.dcMotor.get("fr");
+        driveFR.setDirection(DcMotorSimple.Direction.REVERSE);
+        driveFR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-        DcMotor driveL = hardwareMap.dcMotor.get("fl");
-        driveL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        driveFL = hardwareMap.dcMotor.get("fl");
+        driveFL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        driveBR = hardwareMap.dcMotor.get("br");
+        driveBR.setDirection(DcMotorSimple.Direction.REVERSE);
+        driveBR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        driveBL = hardwareMap.dcMotor.get("bl");
+        driveBL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        int TICKS_PER_REV = 1120;
 
         // Wait for the robot driver to start the autonomous mode
         telemetry.addData(">", "Press Play to start tracking");
         telemetry.update();
         waitForStart();
 
-        driveL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        driveR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        driveFL.setMode(DcMotor.RunMode.RUN_USING_ENCODER); // find what out this is doing
+        driveFR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        driveL.setPower(0.2);
-        driveR.setPower(0.2);
+        driveFL.setPower(0.2);
+        driveFR.setPower(0.2);
+        driveBL.setPower(0.2);
+        driveBR.setPower(0.2);
 
         while (opModeIsActive() && stoneListener.getRawPose() == null) {
             idle();
         }
 
-        driveL.setPower(0);
-        driveR.setPower(0);
+        driveFL.setPower(0);
+        driveFR.setPower(0);
+        driveBL.setPower(0);
+        driveBR.setPower(0);
 
         // analyze skystone
 
@@ -126,11 +138,15 @@ public class AutoEncoder extends LinearOpMode {
         VectorF trans = navOffWall(stoneListener.getPose().getTranslation(), Math.toDegrees(angles.get(0)) - 90, new VectorF(500, 0, 0));
 
         if(trans.get(0) >0){
-            driveL.setPower(0.02);
-            driveR.setPower(-0.02);
+            driveFL.setPower(0.02);
+            driveFR.setPower(-0.02);
+            driveBL.setPower(0.02);
+            driveBR.setPower(-0.02);
         } else {
-            driveL.setPower(-0.02);
-            driveR.setPower(0.02);
+            driveFL.setPower(-0.02);
+            driveFR.setPower(0.02);
+            driveBL.setPower(-0.02);
+            driveBR.setPower(0.02);
         }
 
         do{
@@ -140,10 +156,84 @@ public class AutoEncoder extends LinearOpMode {
             idle();
         } while (opModeIsActive() && Math.abs(trans.get(0)) > 30);
 
-        driveL.setPower(0);
-        driveR.setPower(0);
+        driveFL.setPower(0);
+        driveFR.setPower(0);
+        driveBL.setPower(0);
+        driveBR.setPower(0);
+
+        driveFL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        driveFL.setTargetPosition(1440);
+        while(driveFL.isBusy() && opModeIsActive()) {
+            //Loop body can be empty
+        }
+        driveFL.setPower(0);
+
+        driveFR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        driveFR.setTargetPosition(1440);
+        while(driveFR.isBusy() && opModeIsActive()) {
+            //Loop body can be empty
+        }
+        driveFR.setPower(0);
+
+
+        while(driveBL.isBusy() && opModeIsActive()) {
+            //Loop body can be empty
+        }
+        driveBL.setPower(0);
+
+        driveBR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        driveBR.setTargetPosition(1440);
+        while(driveBR.isBusy() && opModeIsActive()) {
+            //Loop body can be empty
+        }
+        driveBR.setPower(0);
+
+        driveForwardDistance(0.2,5000);
     }
 
+    public void driveForwardDistance(double power, int distance) {
+        setAllModes(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        driveFL.setTargetPosition(distance);
+        driveFR.setTargetPosition(distance);
+        driveBL.setTargetPosition(distance);
+        driveBR.setTargetPosition(distance);
+        setAllModes(DcMotor.RunMode.RUN_TO_POSITION);
+
+        driveForward(power);
+
+        while(allBusy()) {
+            // wait until target position is reached
+        }
+
+        stopDriving();
+        setAllModes(DcMotor.RunMode.RUN_USING_ENCODER);
+    }
+
+    public void setAllModes(DcMotor.RunMode mode) {
+        driveFL.setMode(mode);
+        driveFR.setMode(mode);
+        driveBL.setMode(mode);
+        driveBR.setMode(mode);
+    }
+
+    public boolean allBusy() {
+        return driveFL.isBusy() && driveFR.isBusy() && driveBL.isBusy() && driveBR.isBusy();
+    }
+
+    public void stopDriving() {
+        driveForward(0);
+    }
+
+    public void driveForward(double power) {
+        driveFL.setPower(power);
+        driveFR.setPower(power);
+        driveBL.setPower(power);
+        driveBR.setPower(power);
+    }
+
+    public void turnLeft(double power) {
+
+    }
 
     public VectorF navOffWall(VectorF trans, double robotAngle, VectorF offWall){
         return new VectorF((float) (trans.get(0) - offWall.get(0) * Math.sin(Math.toRadians(robotAngle)) - offWall.get(2) * Math.cos(Math.toRadians(robotAngle))), trans.get(1), (float) (trans.get(2) + offWall.get(0) * Math.cos(Math.toRadians(robotAngle)) - offWall.get(2) * Math.sin(Math.toRadians(robotAngle))));
