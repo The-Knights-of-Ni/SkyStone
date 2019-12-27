@@ -142,13 +142,13 @@ public class TeleopMark1 extends LinearOpMode {
                 robot.armTilt.setPower(1.0);
             }
             else if(rightStickY2 > 0.1){
-                robot.armTilt.setPower(0.5);
-            }
-            else if(rightStickY2 > -0.5){
                 robot.armTilt.setPower(0.7);
             }
+            else if(rightStickY2 > -0.5){
+                robot.armTilt.setPower(1.0);
+            }
             else{
-                robot.armTilt.setPower(0.5);
+                robot.armTilt.setPower(1.0);
             }
 
             if(rightStickY2 >= 0.1){
