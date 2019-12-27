@@ -15,7 +15,7 @@ public class Drive extends Subsystem {
     public DcMotorEx rearRight;
 
     //Sensors
-    private BNO055IMU imu;
+    public BNO055IMU imu;
 
     //DO WITH ENCODERS
     private static final double     COUNTS_PER_MOTOR_REV_20         = 537.6*0.646;    // AM Orbital 20 motor

@@ -18,7 +18,6 @@ import org.firstinspires.ftc.teamcode.Robot;
 @TeleOp(name = "IMUTeleTest")
 public class IMUTeleOPTest extends LinearOpMode{
     private Robot robot;
-    private BNO055IMU imu;
     Orientation lastAngles = new Orientation();
     Velocity velocity = new Velocity();
     Position position = new Position();
@@ -27,47 +26,22 @@ public class IMUTeleOPTest extends LinearOpMode{
     public void runOpMode() throws InterruptedException {
         initOpMode();
 
-
-        robot.frontLeftDriveMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        robot.frontRightDriveMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        robot.rearLeftDriveMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        robot.rearRightDriveMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-
-        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
-
-        parameters.mode                = BNO055IMU.SensorMode.IMU;
-        parameters.angleUnit           = BNO055IMU.AngleUnit.DEGREES;
-        parameters.accelUnit           = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
-        parameters.loggingEnabled      = false;
-
-        imu = hardwareMap.get(BNO055IMU.class, "imu");
-
-        imu.initialize(parameters);
-
-        telemetry.addData("Mode", "calibrating...");
-        telemetry.update();
-
         // make sure the imu gyro is calibrated before continuing.
-        while (!isStopRequested() && !imu.isGyroCalibrated())
+        while (!isStopRequested() && !robot.drive.imu.isGyroCalibrated())
         {
             sleep(50);
             idle();
         }
 
-        telemetry.addData("Mode", "waiting for start");
-        telemetry.addData("imu calib status", imu.getCalibrationStatus().toString());
-        telemetry.update();
 
         // wait for start button.
 
-        waitForStart();
-
-        telemetry.addData("Mode", "running");
+        telemetry.addData("Mode", "Waiting for Start");
         telemetry.update();
-
-        sleep(1000);
         waitForStart();
-        imu.startAccelerationIntegration(position, velocity, 1);
+        telemetry.clearAll();
+
+        robot.drive.imu.startAccelerationIntegration(position, velocity, 1);
         while(opModeIsActive()) {
 
             //Get gamepad inputs
@@ -94,9 +68,6 @@ public class IMUTeleOPTest extends LinearOpMode{
             boolean bumperLeft2 = gamepad2.left_bumper;
             boolean bumperRight2 = gamepad2.right_bumper;
 
-            int winchTargetPosition = 0;
-            robot.xRailWinch.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            robot.xRailWinch.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
             double[] motorPowers = calcMotorPowers(leftStickX, leftStickY, rightStickX);
             robot.rearLeftDriveMotor.setPower(motorPowers[0]);
@@ -104,46 +75,34 @@ public class IMUTeleOPTest extends LinearOpMode{
             robot.rearRightDriveMotor.setPower(motorPowers[2]);
             robot.frontRightDriveMotor.setPower(motorPowers[3]);
 
-            robot.xRailWinch.setPower(calcWinchPower(leftStickY2, 0.7)); //max 0.7
-            robot.armTilt.setPower(Math.pow(rightStickY2, 1.0));
-
-            robot.xRailWinch.setTargetPosition(winchTargetPosition);
-
-
-
-            if (bumperLeft2) {
-                robot.xRailWinch.setPower(0);
-            }
-            if (bumperRight2) {
-                robot.armTilt.setPower(0);
-            }
 
             telemetry.addData("1 imu heading", lastAngles.firstAngle);
             telemetry.addData("2 position", position.toString());
 
-            telemetry.addData("Left Stick Y2", leftStickY2);
-            telemetry.addData("Right Stick Y2", rightStickY2);
-            telemetry.addData("Right Stick X", rightStickX);
-
-            telemetry.addData("", "");
-            telemetry.addData("Left Rear Power", robot.rearLeftDriveMotor.getPower());
-            telemetry.addData("Left Front Power", robot.frontLeftDriveMotor.getPower());
-            telemetry.addData("Right Rear Power", robot.rearRightDriveMotor.getPower());
-            telemetry.addData("Right Front Power", robot.frontRightDriveMotor.getPower());
+//            telemetry.addData("Left Stick Y2", leftStickY2);
+//            telemetry.addData("Right Stick Y2", rightStickY2);
+//            telemetry.addData("Right Stick X", rightStickX);
+//
+//            telemetry.addData("", "");
+//            telemetry.addData("Left Rear Power", robot.rearLeftDriveMotor.getPower());
+//            telemetry.addData("Left Front Power", robot.frontLeftDriveMotor.getPower());
+//            telemetry.addData("Right Rear Power", robot.rearRightDriveMotor.getPower());
+//            telemetry.addData("Right Front Power", robot.frontRightDriveMotor.getPower());
             telemetry.update();
 
             resetAngle();
             updatePosition();
             updateVelocity();
         }
+        robot.drive.imu.stopAccelerationIntegration();
     }
     private void initOpMode() {
         //Initialize DC motor objects
         ElapsedTime timer = new ElapsedTime();
         robot = new Robot(this, timer);
-        robot.xRailWinch.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        robot.xRailWinch.setTargetPosition(0);
-        robot.xRailWinch.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//        robot.xRailWinch.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//        robot.xRailWinch.setTargetPosition(0);
+//        robot.xRailWinch.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 //        robot.init();
 //        lrDrive = hardwareMap.dcMotor.get("lrDrive");
 //        lfDrive = hardwareMap.dcMotor.get("lfDrive");
@@ -187,19 +146,19 @@ public class IMUTeleOPTest extends LinearOpMode{
      */
     private void resetAngle()
     {
-        lastAngles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+        lastAngles = robot.drive.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
 
         globalAngle = 0;
     }
 
     public void updatePosition()
     {
-        position = imu.getPosition();
+        position = robot.drive.imu.getPosition();
     }
 
     public void updateVelocity()
     {
-        velocity = imu.getVelocity();
+        velocity = robot.drive.imu.getVelocity();
     }
 
     /**
@@ -213,7 +172,7 @@ public class IMUTeleOPTest extends LinearOpMode{
         // returned as 0 to +180 or 0 to -180 rolling back to -179 or +179 when rotation passes
         // 180 degrees. We detect this transition and track the total cumulative angle of rotation.
 
-        Orientation angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+        Orientation angles = robot.drive.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
 
         double deltaAngle = angles.firstAngle - lastAngles.firstAngle;
 
