@@ -50,7 +50,7 @@ public class TeleopMark1 extends LinearOpMode {
     int tiltCurrentPosition = 0;
     int tiltTargetPositionCurrent = 0;
     int tiltTargetPositionPre = 0;
-    int tiltPosError = 400;
+    int tiltPosError = 200;
     int tiltMax = 1200;
 
     double timePre;
@@ -131,7 +131,7 @@ public class TeleopMark1 extends LinearOpMode {
             winchCurrentPosition = robot.xRailWinch.getCurrentPosition();
             winchIncrement = (winchSpeed * deltaT) / Math.pow(10.0,9);
             winchTargetPositionCurrent = (int) (winchTargetPositionPre + winchIncrement);
-            if((winchTargetPositionCurrent <= tiltMax) && (winchTargetPositionCurrent >= 0)
+            if((winchTargetPositionCurrent <= winchMax) && (winchTargetPositionCurrent >= 0)
                     && ( Math.abs(winchTargetPositionCurrent - winchCurrentPosition) < winchPosError)){
                 robot.xRailWinch.setTargetPosition(winchTargetPositionCurrent);
                 winchTargetPositionPre = winchTargetPositionCurrent;
