@@ -107,10 +107,8 @@ public class AutoEncoder extends LinearOpMode {
         telemetry.update();
         waitForStart();
 
-        driveL.setTargetPosition(-5000);
-
-        driveL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        driveR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        driveL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        driveR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         driveL.setPower(0.2);
         driveR.setPower(0.2);
