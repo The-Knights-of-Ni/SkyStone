@@ -83,7 +83,7 @@ public class TeleopMark1 extends LinearOpMode {
             leftStickX2 = gamepad2.left_stick_x;
             leftStickY2 = -gamepad2.left_stick_y;
             rightStickX2 = gamepad2.right_stick_x;
-            rightStickY2 = gamepad2.right_stick_y;
+            rightStickY2 = -gamepad2.right_stick_y;
             aButton2 = gamepad2.a;
             bButton2 = gamepad2.b;
             dPadUp2 = gamepad2.dpad_up;
@@ -174,9 +174,9 @@ public class TeleopMark1 extends LinearOpMode {
             telemetry.addData("Right Stick X", rightStickX);
             telemetry.addData("deltaT", deltaT);
 
-            telemetry.addData("currentPosWinch", winchCurrentPosition);
-            telemetry.addData("targetPosWinch", winchTargetPositionCurrent);
-            telemetry.addData("incrementWinch", winchIncrement);
+//            telemetry.addData("currentPosWinch", winchCurrentPosition);
+//            telemetry.addData("targetPosWinch", winchTargetPositionCurrent);
+//            telemetry.addData("incrementWinch", winchIncrement);
 
             telemetry.addData("currentPosTilt", tiltCurrentPosition);
             telemetry.addData("targetPosTilt", tiltTargetPositionCurrent);
