@@ -55,8 +55,6 @@ public class TeleopMark1 extends LinearOpMode {
 
     double timePre;
     double timeCurrent;
-    double leftStickY2Pre;
-    double leftStickY2Current;
     double winchSpeed;
     double tiltSpeed;
     double deltaT;
