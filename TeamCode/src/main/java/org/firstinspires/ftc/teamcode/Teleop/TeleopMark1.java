@@ -199,6 +199,11 @@ public class TeleopMark1 extends LinearOpMode {
         robot.xRailWinch.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.xRailWinch.setTargetPosition(0);
         robot.xRailWinch.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        robot.armTilt.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.armTilt.setTargetPosition(0);
+        robot.armTilt.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
         timeCurrent = timer.nanoseconds();
         timePre = timeCurrent;
 //        robot.init();
