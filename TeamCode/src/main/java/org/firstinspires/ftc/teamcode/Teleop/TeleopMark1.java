@@ -50,7 +50,7 @@ public class TeleopMark1 extends LinearOpMode {
     int tiltCurrentPosition = 0;
     int tiltTargetPositionCurrent = 0;
     int tiltTargetPositionPre = 0;
-    int tiltPosError = 200;
+    int tiltPosError = 300;
     int tiltMax = 1200;
 
     double timePre;
@@ -145,10 +145,10 @@ public class TeleopMark1 extends LinearOpMode {
                 robot.armTilt.setPower(0.5);
             }
             else if(rightStickY2 > -0.5){
-                robot.armTilt.setPower(0.3);
+                robot.armTilt.setPower(0.7);
             }
             else{
-                robot.armTilt.setPower(0.7);
+                robot.armTilt.setPower(0.5);
             }
 
             if(rightStickY2 >= 0.1){
