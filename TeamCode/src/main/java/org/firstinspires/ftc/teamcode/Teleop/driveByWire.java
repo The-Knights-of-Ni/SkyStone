@@ -174,5 +174,18 @@ public class driveByWire extends LinearOpMode {
             return globalAngle;
         }
 
+        private double[] calcMotorPowers(double leftStickX, double leftStickY, double rightStickX) {
+            double r = Math.hypot(leftStickX, leftStickY);
+            double goalAngle = Math.atan2(leftStickY, leftStickX) - Math.PI / 4;
+            double robotAngle = this.getAngle();
+            double correctionIntensity = 0;
+            double correctionAmount = Math.abs(robotAngle - goalAngle) + correctionIntensity;
+            double correctedAngle = goalAngle + correctionAmount;
+            double lrPower = r * Math.sin(correctedAngle) + rightStickX;
+            double lfPower = r * Math.cos(correctedAngle) + rightStickX;
+            double rrPower = r * Math.cos(correctedAngle) - rightStickX;
+            double rfPower = r * Math.sin(correctedAngle) - rightStickX;
+            return new double[]{lrPower, lfPower, rrPower, rfPower};
+
     }
 }
