@@ -31,9 +31,11 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
+import com.qualcomm.hardware.bosch.NaiveAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Func;
 import org.firstinspires.ftc.robotcore.external.navigation.Acceleration;
@@ -83,7 +85,7 @@ public class SensorBNO055IMU extends LinearOpMode
         parameters.calibrationDataFile = "BNO055IMUCalibration.json"; // see the calibration sample opmode
         parameters.loggingEnabled      = true;
         parameters.loggingTag          = "IMU";
-        parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
+        parameters.accelerationIntegrationAlgorithm = new BasicAccelerationIntegrator();
 
         // Retrieve and initialize the IMU. We expect the IMU to be attached to an I2C port
         // on a Core Device Interface Module, configured to be a sensor of type "AdaFruit IMU",
@@ -98,12 +100,25 @@ public class SensorBNO055IMU extends LinearOpMode
         waitForStart();
 
         // Start the logging of measured acceleration
-        imu.startAccelerationIntegration(new Position(), new Velocity(), 1000);
-
+        Position currentPos = imu.getPosition();
+        Velocity currentV = imu.getVelocity();
+        imu.startAccelerationIntegration(currentPos, currentV, 10);
+        Acceleration a = new Acceleration();
+//        ElapsedTime timer = new ElapsedTime();
+//        double timePre = 0;
+//        double timeCurrent = 0;
         // Loop and update the dashboard
         while (opModeIsActive()) {
+            currentPos = imu.getPosition();
+            currentV = imu.getVelocity();
+            a = imu.getAcceleration();
+            telemetry.addData("pos", currentPos);
+            telemetry.addData("v", currentV);
+            telemetry.addData("aVector", a);
             telemetry.update();
+
         }
+        imu.stopAccelerationIntegration();
     }
 
     //----------------------------------------------------------------------------------------------

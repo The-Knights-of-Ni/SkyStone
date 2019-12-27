@@ -26,13 +26,17 @@ public class Drive extends Subsystem {
     private static final double     COUNTS_CORRECTION_X             = 0.939;
     private static final double     COUNTS_CORRECTION_Y             = 0.646;
 
-    private static final double     WINCH_DIAMETER_INCH             = 1.244;  //inch original measurement
-    private static final double     WINCH_DIAMETER_MM               = WINCH_DIAMETER_INCH * 2.54 * 10.0; //milimeters
-    private static final double     WINCH_RADIUS_MM                 = WINCH_DIAMETER_MM / 2.0;
-    private static final double     WINCH_CIRCUMFERENCE_MM          = WINCH_RADIUS_MM * 2.0 * Math.PI;
-    private static final double     MOTOR_TICK_PER_REV_40           = 1120.0;
-    private static final double     WINCH_MAX_SPEED_MM_PER_SEC      = (160.0 * WINCH_DIAMETER_MM * Math.PI) / 60.0;
-    private static final double     WINCH_MAX_SPEED_TICK_PER_SEC    = (MOTOR_TICK_PER_REV_40 * 160.0) / 60.0;
+    private static final double     WINCH_DIAMETER_INCH                 = 1.244;  //inch original measurement
+    private static final double     WINCH_DIAMETER_MM                   = WINCH_DIAMETER_INCH * 2.54 * 10.0; //milimeters
+    private static final double     WINCH_RADIUS_MM                     = WINCH_DIAMETER_MM / 2.0;
+    private static final double     WINCH_CIRCUMFERENCE_MM              = WINCH_RADIUS_MM * 2.0 * Math.PI;
+    private static final double     MOTOR_TICK_PER_REV_NEVERREST40      = 1120.0;
+    private static final double     MOTOR_TICK_PER_REV_YELLOJACKET223   = 188.3;
+    private static final double     REV_PER_MIN_YELLOJACKET223          = 223.0;
+    private static final double     WINCH_MAX_SPEED_MM_PER_SEC          = (160.0 * WINCH_DIAMETER_MM * Math.PI) / 60.0;
+    private static final double     WINCH_MAX_SPEED_TICK_PER_SEC        = (MOTOR_TICK_PER_REV_NEVERREST40 * 160.0) / 60.0;
+    private static final double     TILT_MAX_SPEED_TICK_PER_SEC         = (MOTOR_TICK_PER_REV_YELLOJACKET223 * REV_PER_MIN_YELLOJACKET223) / 60.0;
+
 
 
     public Drive(DcMotorEx frontLeft, DcMotorEx frontRight, DcMotorEx rearLeft, DcMotorEx rearRight, BNO055IMU imu, ElapsedTime timer) {
@@ -49,9 +53,14 @@ public class Drive extends Subsystem {
         return WINCH_MAX_SPEED_MM_PER_SEC;
     }
 
-    public double getWinchMaxSpeedTICKpSec(){
+    public double getWinchMaxSpeedTickPerSec(){
         return WINCH_MAX_SPEED_TICK_PER_SEC;
     }
+
+    public double getTiltMaxSpeedTickPerSec(){
+        return TILT_MAX_SPEED_TICK_PER_SEC;
+    }
+
 
     /**
      * Stops all drive motors
