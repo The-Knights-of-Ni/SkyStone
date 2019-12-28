@@ -33,14 +33,6 @@ public class driveByWire extends LinearOpMode {
         public void runOpMode() throws InterruptedException
         {
             initOpMode();
-            robot.frontLeftDriveMotor.setDirection(DcMotor.Direction.REVERSE);
-            robot.rearLeftDriveMotor.setDirection(DcMotor.Direction.REVERSE);
-
-
-            robot.frontLeftDriveMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-            robot.frontRightDriveMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-            robot.rearLeftDriveMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-            robot.rearRightDriveMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
             BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
 
@@ -78,6 +70,8 @@ public class driveByWire extends LinearOpMode {
             telemetry.update();
 
             sleep(1000);
+
+            robot.drive.turnByAngle(0.2, 180);
 
             // drive until end of period.
 
@@ -133,7 +127,7 @@ public class driveByWire extends LinearOpMode {
 //                    robot.rearRightDriveMotor.setPower(0);
 //                    robot.frontRightDriveMotor.setPower(0);
 //                }
-                robot.drive.turnByAngle(0.2, 180);
+
 
                 // Use gyro to drive in a straight line.
                 //telemetry.addData("Correction Angle: ", correctionAmount );
