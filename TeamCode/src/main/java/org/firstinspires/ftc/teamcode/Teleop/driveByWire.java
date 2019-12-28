@@ -33,14 +33,6 @@ public class driveByWire extends LinearOpMode {
         public void runOpMode() throws InterruptedException
         {
             initOpMode();
-            robot.frontLeftDriveMotor.setDirection(DcMotor.Direction.REVERSE);
-            robot.rearLeftDriveMotor.setDirection(DcMotor.Direction.REVERSE);
-
-
-            robot.frontLeftDriveMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-            robot.frontRightDriveMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-            robot.rearLeftDriveMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-            robot.rearRightDriveMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
             BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
 
@@ -79,6 +71,8 @@ public class driveByWire extends LinearOpMode {
 
             sleep(1000);
 
+            robot.drive.turnByAngle(0.2, 180);
+
             // drive until end of period.
 
             while (opModeIsActive())
@@ -112,29 +106,34 @@ public class driveByWire extends LinearOpMode {
                 double r = 0.3;
                 double goalAngle = 0;
                 double correctionAmount = robotAngle - goalAngle;
-                //double correctedAngle = goalAngle - correctionAmount;
-                if(Math.abs(correctionAmount) >= 2) {
-                    double lrPower = r;
-                    double lfPower = r;
-                    double rrPower = r;
-                    double rfPower = r;
-                    robot.rearLeftDriveMotor.setPower(lrPower);
-                    robot.frontLeftDriveMotor.setPower(lfPower);
-                    robot.rearRightDriveMotor.setPower(rrPower);
-                    robot.frontRightDriveMotor.setPower(rfPower);
-                } else {
-                    robot.rearLeftDriveMotor.setPower(0);
-                    robot.frontLeftDriveMotor.setPower(0);
-                    robot.rearRightDriveMotor.setPower(0);
-                    robot.frontRightDriveMotor.setPower(0);
-                }
+//                //double correctedAngle = goalAngle - correctionAmount;
+//                if(Math.abs(correctionAmount) <= 30) {
+//                    robot.rearLeftDriveMotor.setPower(0.1);
+//                    robot.frontLeftDriveMotor.setPower(0.1);
+//                    robot.rearRightDriveMotor.setPower(0.1);
+//                    robot.frontRightDriveMotor.setPower(0.1);
+//                } else if (Math.abs(correctionAmount) >= 5) {
+//                    double lrPower = r;
+//                    double lfPower = r;
+//                    double rrPower = r;
+//                    double rfPower = r;
+//                    robot.rearLeftDriveMotor.setPower(lrPower);
+//                    robot.frontLeftDriveMotor.setPower(lfPower);
+//                    robot.rearRightDriveMotor.setPower(rrPower);
+//                    robot.frontRightDriveMotor.setPower(rfPower);
+//                } else {
+//                    robot.rearLeftDriveMotor.setPower(0);
+//                    robot.frontLeftDriveMotor.setPower(0);
+//                    robot.rearRightDriveMotor.setPower(0);
+//                    robot.frontRightDriveMotor.setPower(0);
+//                }
 
 
                 // Use gyro to drive in a straight line.
-                telemetry.addData("Correction Angle: ", correctionAmount );
+                //telemetry.addData("Correction Angle: ", correctionAmount );
                 telemetry.addData("Robot Angle: ", robotAngle );
-                telemetry.addData("1 imu heading", lastAngles.firstAngle);
-                telemetry.addData("2 global heading", globalAngle);
+                //telemetry.addData("1 imu heading", lastAngles.firstAngle);
+                //telemetry.addData("2 global heading", globalAngle);
                 //telemetry.addData("3 correction", correction);
                 telemetry.update();
 
