@@ -113,7 +113,7 @@ public class driveByWire extends LinearOpMode {
                 double goalAngle = 0;
                 double correctionAmount = robotAngle - goalAngle;
                 //double correctedAngle = goalAngle - correctionAmount;
-                if(Math.abs(correctionAmount) >= 2) {
+                if(Math.abs(correctionAmount) >= 5) {
                     double lrPower = r;
                     double lfPower = r;
                     double rrPower = r;
@@ -122,7 +122,7 @@ public class driveByWire extends LinearOpMode {
                     robot.frontLeftDriveMotor.setPower(lfPower);
                     robot.rearRightDriveMotor.setPower(rrPower);
                     robot.frontRightDriveMotor.setPower(rfPower);
-                } else if (Math.abs(correctionAmount) <= 10) {
+                } else if (Math.abs(correctionAmount) <= 30) {
                     robot.rearLeftDriveMotor.setPower(0.1);
                     robot.frontLeftDriveMotor.setPower(0.1);
                     robot.rearRightDriveMotor.setPower(0.1);
