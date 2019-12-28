@@ -355,7 +355,6 @@ public class AutoMark2 extends LinearOpMode {
         Log.d(TAG, message);
     }
 
-
     private double[] robotPosNav() {
         /** Start tracking the data sets we care about. */
         targetsRoverRuckus.activate();
